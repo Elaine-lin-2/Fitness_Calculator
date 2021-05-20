@@ -35,10 +35,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.*;
 
+<<<<<<< HEAD
 //file reading and writing
 import java.io.File;
 import java.io.FileWriter;
 
+=======
+>>>>>>> e9c4d8e463493a32b2b33807476a47bb2ed74cd7
 public class FitnessCalculatorCS extends Application {
 
     public static void main(String[] args) {
@@ -204,7 +207,10 @@ public class FitnessCalculatorCS extends Application {
                 
         });
     }
+<<<<<<< HEAD
     public static void printData() { // need to add parameters so i can export data
 
     }
+=======
+>>>>>>> e9c4d8e463493a32b2b33807476a47bb2ed74cd7
 }
