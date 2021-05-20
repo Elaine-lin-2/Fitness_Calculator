@@ -33,6 +33,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.text.*;
 
 public class FitnessCalculatorCS extends Application {
 
@@ -77,7 +78,13 @@ public class FitnessCalculatorCS extends Application {
             menu.getItems().add(menuItem2);
             menu.getItems().add(menuItem3);
 
+            //TO BE MODIFIED
             int number = Integer.parseInt(text1.getText());
+            String []nameArray = new String[number];
+            String []genderArray = new String[number];
+            String []numArray = new String[number];
+            
+            
 
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 
@@ -95,26 +102,40 @@ public class FitnessCalculatorCS extends Application {
 
                     Label labelthird= new Label("    Enter the max number of reps");
                     Label label3= new Label();
-                    Button button= new Button("OK");
                     TextField text3= new TextField();
+                    Button button= new Button("OK");
+
+                    Label label= new Label();
                     
                     //event
                     button.setOnAction(f -> {
 
                     //collects information -> to be printed in CSV
-                    label1.setText("Student name:  " + text1.getText());
-                    label2.setText("Their gender is: " + text2.getText());
-                    label3.setText("The max number of they can do: " + text3.getText());
-                    });
+                    for(int i=0; i<number; i++){
+                        nameArray[i] = text1.getText();
+                        genderArray[i] = text2.getText();
+                        numArray[i] = text3.getText();
+                    }
 
+                    for(int i=0; i<number; i++){
+                        label1.setText("    Student name:  " + nameArray[i]);
+                        label2.setText("    Their gender is: " + genderArray[i]);
+                        label3.setText("    The max number of they can do: " + numArray[i]);
+
+                        //needs to add text to the scene
+                    }
+
+                    });
+                    
                     VBox layout= new VBox(5);
 
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
 
                     layout.getChildren().addAll(labelfirst, labelsecond, labelthird, text1,
-                    text2, text3, button, button2, label1, label2, label3);
-                        
+                    text2, text3, button, button2, label1, label2, label3, label
+                    );
+                    
                     Scene scene1= new Scene(layout, 500, 500);
                     primaryStage.setScene(scene1);
                     primaryStage.show();
