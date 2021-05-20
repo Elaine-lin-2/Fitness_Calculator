@@ -2,7 +2,9 @@
 * Date: May 19th 2021
 * Names: Tiffany, Krishna, Marc-Anthony, Elaine
 * Teacher: Mr.Ho
-* Description: 
+* Description: A program that analyzes/compares (through a double bar graph) how much a student lifts vs. how much they can potentially 
+                lift (using the Epley Formula), then provides each student with an individualized report containing how they can work 
+                towards their calculated max lifts
 * 
 */
 
