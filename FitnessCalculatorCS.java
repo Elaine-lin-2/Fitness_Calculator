@@ -38,129 +38,145 @@ public class FitnessCalculatorCS extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        //add methods into start(); instead of main
     }
 
-    //@Override
     public void start(Stage primaryStage) {
 
-        
-        //user menu
-        primaryStage.setTitle("JavaFX App");
+        primaryStage.setTitle("Student information");
+        Label labelfirst= new Label("    How many students would you like to record?");
+        Label label1= new Label();
+        Button button= new Button("OK");
+        TextField text1= new TextField();
 
-        MenuBar menuBar = new MenuBar();
-        VBox vBox = new VBox(menuBar);
-        Scene scene = new Scene(vBox, 300, 400);
-  
-        primaryStage.setScene(scene);
+        VBox layout= new VBox(5);
+        layout.getChildren().addAll(labelfirst,text1, button, label1);
+
+        Scene scene1= new Scene(layout, 500, 500);
+        primaryStage.setScene(scene1);
         primaryStage.show();
 
-        Menu menu = new Menu("Menu");
-        MenuItem menuItem1 = new MenuItem("Enter user information");
-        MenuItem menuItem2 = new MenuItem("Calculate expected weight and print bar graph");
-        MenuItem menuItem3 = new MenuItem("Generate Individualized report");
+        button.setOnAction(f -> {
 
-        menu.getItems().add(menuItem1);
-        menu.getItems().add(menuItem2);
-        menu.getItems().add(menuItem3);
+            //user menu
+            primaryStage.setTitle("Menu");
 
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            
-            public void handle(ActionEvent e){
-                //text
-                primaryStage.setTitle("User Information");
-
-                Label labelfirst= new Label("    Enter student name");
-                Label label1= new Label();
-                TextField text1= new TextField();
-                
-                Label labelsecond= new Label("    Enter student gender");
-                Label label2= new Label();
-                TextField text2= new TextField();
-
-                Label labelthird= new Label("    Enter the max number of reps");
-                Label label3= new Label();
-                Button button= new Button("OK");
-                TextField text3= new TextField();
-                
-                //event
-                button.setOnAction(f -> {
-
-                //collects information -> to be printed in CSV
-                label1.setText("Student name:  " + text1.getText());
-                label2.setText("Their gender is: " + text2.getText());
-                label3.setText("The max number of they can do: " + text3.getText());
-                });
-
-                VBox layout= new VBox(5);
-
-                Button button2= new Button("Go back to menu");
-                button2.setOnAction(f -> primaryStage.setScene(scene));
-
-                layout.getChildren().addAll(labelfirst, labelsecond, labelthird, text1,
-                text2, text3, button, button2, label1, label2, label3);
-                        
-                Scene scene1= new Scene(layout, 500, 500);
-                primaryStage.setScene(scene1);
-                primaryStage.show();
-                
-            }
-            
-        };
-        //call event
-        menuItem1.setOnAction(event);
-
-        EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
-            
-            public void handle(ActionEvent e){
-                
-                primaryStage.setTitle("Expected weights");
-
-                Label label= new Label();
-                label.setText("    Calculating the expected weights!");
-
-                VBox layout= new VBox(5);
-        
-                Button button2= new Button("Go back to menu");
-                button2.setOnAction(f -> primaryStage.setScene(scene));
-
-                layout.getChildren().addAll(label, button2);
-
-                Scene scene= new Scene(layout, 500, 500);
-                primaryStage.setScene(scene);
-
-                primaryStage.show();
-                
-            }
-        };
-        menuItem2.setOnAction(event2);
-
-        EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
-            
-            public void handle(ActionEvent e){
-                
-                primaryStage.setTitle("Reports");
-
-                Label label= new Label();
-                label.setText("    Generating individual reports!");
-
-                Button button2= new Button("Go back to menu");
-                button2.setOnAction(f -> primaryStage.setScene(scene));
-
-                VBox layout= new VBox(5);
-                layout.getChildren().addAll(label, button2);
-                
-                Scene scene= new Scene(layout, 500, 500);
-                primaryStage.setScene(scene);
-
-                primaryStage.show();
-                
-            }
-        };
-        menuItem3.setOnAction(event3);
-
-        //MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(menu);
-
-    }
+            MenuBar menuBar = new MenuBar();
+            VBox vBox = new VBox(menuBar);
+            Scene scene = new Scene(vBox, 300, 400);
     
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            Menu menu = new Menu("Menu");
+            MenuItem menuItem1 = new MenuItem("Enter user information");
+            MenuItem menuItem2 = new MenuItem("Calculate expected weight and print bar graph");
+            MenuItem menuItem3 = new MenuItem("Generate Individualized report");
+            
+            menu.getItems().add(menuItem1);
+            menu.getItems().add(menuItem2);
+            menu.getItems().add(menuItem3);
+
+            int number = Integer.parseInt(text1.getText());
+
+            EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+                
+                public void handle(ActionEvent e){
+                    //text
+                    primaryStage.setTitle("User Information");
+
+                    Label labelfirst= new Label("    Enter student name");
+                    Label label1= new Label();
+                    TextField text1= new TextField();
+                    
+                    Label labelsecond= new Label("    Enter student gender");
+                    Label label2= new Label();
+                    TextField text2= new TextField();
+
+                    Label labelthird= new Label("    Enter the max number of reps");
+                    Label label3= new Label();
+                    Button button= new Button("OK");
+                    TextField text3= new TextField();
+                    
+                    //event
+                    button.setOnAction(f -> {
+
+                    //collects information -> to be printed in CSV
+                    label1.setText("Student name:  " + text1.getText());
+                    label2.setText("Their gender is: " + text2.getText());
+                    label3.setText("The max number of they can do: " + text3.getText());
+                    });
+
+                    VBox layout= new VBox(5);
+
+                    Button button2= new Button("Go back to menu");
+                    button2.setOnAction(f -> primaryStage.setScene(scene));
+
+                    layout.getChildren().addAll(labelfirst, labelsecond, labelthird, text1,
+                    text2, text3, button, button2, label1, label2, label3);
+                        
+                    Scene scene1= new Scene(layout, 500, 500);
+                    primaryStage.setScene(scene1);
+                    primaryStage.show();
+                    
+                }
+                
+            };
+            //call event
+            menuItem1.setOnAction(event);
+
+            EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
+                
+                public void handle(ActionEvent e){
+                    
+                    primaryStage.setTitle("Expected weights");
+
+                    Label label= new Label();
+                    label.setText("    Calculating the expected weights!");
+
+                    VBox layout= new VBox(5);
+            
+                    Button button2= new Button("Go back to menu");
+                    button2.setOnAction(f -> primaryStage.setScene(scene));
+
+                    layout.getChildren().addAll(label, button2);
+
+                    Scene scene= new Scene(layout, 500, 500);
+                    primaryStage.setScene(scene);
+
+                    primaryStage.show();
+                    
+                }
+            };
+            menuItem2.setOnAction(event2);
+
+            EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
+                
+                public void handle(ActionEvent e){
+                    
+                    primaryStage.setTitle("Reports");
+
+                    Label label= new Label();
+                    label.setText("    Generating individual reports!");
+
+                    Button button2= new Button("Go back to menu");
+                    button2.setOnAction(f -> primaryStage.setScene(scene));
+
+                    VBox layout= new VBox(5);
+                    layout.getChildren().addAll(label, button2);
+                    
+                    Scene scene= new Scene(layout, 500, 500);
+                    primaryStage.setScene(scene);
+
+                    primaryStage.show();
+                    
+                }
+            };
+            menuItem3.setOnAction(event3);
+
+            //MenuBar menuBar = new MenuBar();
+            menuBar.getMenus().add(menu);
+                
+        });
+    }
 }
