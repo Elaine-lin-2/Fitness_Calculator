@@ -1,6 +1,6 @@
 /*
 * Date: May 19th 2021
-* Names: Tiffany, Krishna, Marc-Anthoney, Elaine
+* Names: Tiffany, Krishna, Marc-Anthony, Elaine
 * Teacher: Mr.Ho
 * Description: 
 * 
