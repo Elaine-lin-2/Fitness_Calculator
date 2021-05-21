@@ -210,6 +210,7 @@ public class FitnessCalculatorCS extends Application {
         
     }
     public static void printData() throws Exception { // need to add parameters so i can export data
+        // initialise variables
         String fileLocation = "export.csv";
         File file = new File(fileLocation);
         FileWriter writer = new FileWriter(file);
@@ -220,5 +221,6 @@ public class FitnessCalculatorCS extends Application {
                                                        // change title to actual titles later once i know exactly what they are
         }
 
+        writer.close();
     }
 }
