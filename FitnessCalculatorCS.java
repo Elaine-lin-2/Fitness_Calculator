@@ -2,7 +2,9 @@
 * Date: May 19th 2021
 * Names: Tiffany, Krishna, Marc-Anthony, Elaine
 * Teacher: Mr.Ho
-* Description: 
+* Description: A program that analyzes/compares (through a double bar graph) how much a student lifts vs. how much they can potentially 
+                lift (using the Epley Formula), then provides each student with an individualized report containing how they can work 
+                towards their calculated max lifts
 * 
 */
 
@@ -34,6 +36,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.*;
+
+//file reading and writing
+import java.io.File;
+import java.io.FileWriter;
 
 public class FitnessCalculatorCS extends Application {
 
@@ -202,5 +208,8 @@ public class FitnessCalculatorCS extends Application {
                 
         });
         
+    }
+    public static void printData() { // need to add parameters so i can export data
+
     }
 }
