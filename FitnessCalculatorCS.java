@@ -5,10 +5,7 @@
 * Description: A program that analyzes/compares (through a double bar graph) how much a student lifts vs. how much they can potentially 
                 lift (using the Epley Formula), then provides each student with an individualized report containing how they can work 
                 towards their calculated max lifts
-* 
 */
-
-//FitnessCalculatorCS 
 
 //button
 import javafx.application.Application;
@@ -21,25 +18,28 @@ import javafx.stage.Stage;
 
 //button events
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
+//import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 
 //text
-import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+//import static javafx.application.Application.launch;
+//import javafx.scene.text.*;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.scene.text.*;
 
-//file reading and writing
-import java.io.File;
-import java.io.FileWriter;
+//graphs
+import java.util.Arrays;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.stage.Stage;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+
 
 public class FitnessCalculatorCS extends Application {
 
@@ -47,7 +47,6 @@ public class FitnessCalculatorCS extends Application {
         launch(args);
         //add methods into start(); instead of main
     }
-
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("Student information");
@@ -122,12 +121,10 @@ public class FitnessCalculatorCS extends Application {
                             }
 
                             for(int k=0; k<number; k++){
-
                                 label1.setText("    Student name:  " + nameArray[k]);
                                 label2.setText("    Their gender is: " + genderArray[k]);
                                 label3.setText("    The max number of they can do: " + numArray[k]);
                             }
-
                         });
                         VBox layout2= new VBox(5);  
 
@@ -191,15 +188,72 @@ public class FitnessCalculatorCS extends Application {
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
 
+                    Button button3= new Button("Show bar graph");
+                    button3.setOnAction(f -> {
+
+                        CategoryAxis xAxis = new CategoryAxis();  
+                        xAxis.setCategories(FXCollections.<String>
+                        observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4")));
+                        xAxis.setLabel("Student name");
+                        
+                        NumberAxis yAxis = new NumberAxis();
+                        yAxis.setLabel("Weight");
+                        
+                        //Creating the Bar chart
+                        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis); 
+                        barChart.setTitle("Expect Weight vs. Actual Weight");
+                        
+                        //Prepare XYChart.Series objects by setting data       
+                        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+                        series1.setName("Expected weight");
+    
+                        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+                        series2.setName("Acutual weight");
+
+                        for(int i=0; i< number; i++){
+                            series1.getData().add(new XYChart.Data<>("Name 1", 1.0));
+                            series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
+                            series2.getData().add(new XYChart.Data<>("Name 1", 5.0));
+                            series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
+
+                            //Setting the data to bar chart       
+                            barChart.getData().addAll(series1, series2);
+
+                        }
+                        
+                        
+                        //Creating a Group object 
+                        Group root = new Group(barChart);
+                        
+                        
+
+                        //Creating a scene object
+                        Scene scene = new Scene(root, 600, 400);
+
+                        //Setting title to the Stage
+                        primaryStage.setTitle("Bar Chart");
+                            
+                        //Adding scene to the stage
+                        primaryStage.setScene(scene);
+                            
+                        //Displaying the contents of the stage
+                        primaryStage.show(); 
+                    });
+
                     VBox layout= new VBox(5);
-                    layout.getChildren().addAll(label, button2);
+                    layout.getChildren().addAll(label, button2, button3);
                     
                     Scene scene= new Scene(layout, 500, 500);
                     primaryStage.setScene(scene);
 
                     primaryStage.show();
-                    
+
+
+
                 }
+
+                
+                
             };
             menuItem3.setOnAction(event3);
 
@@ -207,9 +261,6 @@ public class FitnessCalculatorCS extends Application {
             menuBar.getMenus().add(menu);
                 
         });
-        
     }
-    public static void printData() { // need to add parameters so i can export data
 
-    }
 }
