@@ -89,6 +89,15 @@ public class FitnessCalculatorCS extends Application {
             String []nameArray = new String[number];
             String []genderArray = new String[number];
             String []numArray = new String[number];
+            String []maxRepArray = new String[number]; //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
+   	 	    String []maxWeightArray = new String[number]; //--> Added            -just wanted to make sure my addition didn't disrupt your plans loll)
+   	 	    String []expected1RMArray = new String[number]; //--> Added
+
+            //do //{
+   	 		//Subs in the entire max rep and max weight arrays and returns an array of expected 1RM results
+    		expected1RMArray = EpleyCalculation(maxRepArray, maxWeightArray);
+            //} while (true);
+            //}
 
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent e){
@@ -207,7 +216,6 @@ public class FitnessCalculatorCS extends Application {
             menuBar.getMenus().add(menu);
                 
         });
-        
     }
     public static void printData() throws Exception { // need to add parameters so i can export data
         // initialise variables
@@ -222,5 +230,38 @@ public class FitnessCalculatorCS extends Application {
         }
 
         writer.close();
+    }
+
+    public static String[] EpleyCalculation(String []maxRep, String []maxWeight) {
+    	//1RM = w(1 + r/30) --> Epley's Formula
+    	
+    	//Going to be the array that will be returned, it contains the one rep max for each person
+    	//maxRep.length is used so that the returned 1RM array has the amount on indices as the max rep and max weight array
+    	String []oneRMArray = new String[maxRep.length];
+    	
+    	//Temporary string variables to hold values of each index in each array
+    	String maxRepString = "";
+    	String maxWeightString = "";
+    	
+    	//Temporary double variable to hold values of each index in each array, stored as a double to be used in calculations
+    	double maxRepDouble = 0;
+    	double maxWeightDouble = 0;
+    	
+    	//Loop through each index in both arrays
+    	for (int i = 0; i < maxRep.length; i++) {
+    		//Stores the string of each value into the other string variable (makes a copy)
+    		maxRepString = maxRep[i];
+    		maxWeightString = maxWeight[i];
+    		
+    		//Stores the string of each value into the double variable (makes a double copy of the string)
+    		maxRepDouble = Double.parseDouble(maxRepString);
+    		maxWeightDouble = Double.parseDouble(maxWeightString);
+    		
+    		//Calculates the expected 1RM for this person and stores result as a string
+    		oneRMArray[i] = String.valueOf(maxWeightDouble * (1.0 + (maxRepDouble / 30.0)));
+    	}
+    	
+    	//Return the string and store it in the "expected1RMArray" array
+    	return oneRMArray;
     }
 }
