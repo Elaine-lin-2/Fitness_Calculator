@@ -209,7 +209,16 @@ public class FitnessCalculatorCS extends Application {
         });
         
     }
-    public static void printData() { // need to add parameters so i can export data
+    public static void printData() throws Exception { // need to add parameters so i can export data
+        String fileLocation = "export.csv";
+        File file = new File(fileLocation);
+        FileWriter writer = new FileWriter(file);
+
+        if (!file.exists()) {
+            file.createNewFile();
+            writer.write("title, title, more titles"); // Writes the title of the csv file if it wasn't made yet, will 
+                                                       // change title to actual titles later once i know exactly what they are
+        }
 
     }
 }
