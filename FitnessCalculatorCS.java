@@ -6,6 +6,9 @@
                 lift (using the Epley Formula), then provides each student with an individualized report containing how they can work 
                 towards their calculated max lifts
 */
+//file reading and writing
+import java.io.File;
+import java.io.FileWriter;
 
 //button
 import javafx.application.Application;
@@ -96,10 +99,10 @@ public class FitnessCalculatorCS extends Application {
                     VBox layout= new VBox(5);
 
                     for(int i=0; i<number; i++){
-                        
                         Label labelfirst= new Label("    Enter student name");
                         Label label1= new Label();
                         TextField text1= new TextField();
+                        Label label = new Label("    Student " + (i+1));
                         
                         Label labelsecond= new Label("    Enter student gender");
                         Label label2= new Label();
@@ -109,38 +112,39 @@ public class FitnessCalculatorCS extends Application {
                         Label label3= new Label();
                         TextField text3= new TextField();
                         
-                        Button button= new Button("Show");
+                        Button button= new Button("Save and show");
+
+                        //not sure how to add array here -> it won't add itself
+                        
 
                         button.setOnAction(f -> {
+                            label1.setText("    Student name:  " + text1.getText());
+                            label2.setText("    Their gender is: " + text2.getText());
+                            label3.setText("    The max number of they can do: " + text3.getText());
 
-                            //collects information -> to be printed in CSV
-                            for(int j=0; j<number; j++){
-                                nameArray[j] = text1.getText();
-                                genderArray[j] = text2.getText();
-                                numArray[j] = text3.getText();
-                            }
-
-                            for(int k=0; k<number; k++){
-                                label1.setText("    Student name:  " + nameArray[k]);
-                                label2.setText("    Their gender is: " + genderArray[k]);
-                                label3.setText("    The max number of they can do: " + numArray[k]);
-                            }
+                            layout.getChildren().addAll(label, label1, label2, label3);
                         });
-                        VBox layout2= new VBox(5);  
 
+                        nameArray[i] = text1.getText();
+                        genderArray[i] = text2.getText();
+                        numArray[i] = text3.getText();
+                        
+
+                        VBox layout2= new VBox(5);
+                        
                         layout.getChildren().addAll(labelfirst, text1, labelsecond,
-                        text2, labelthird, text3, button, layout2, label1, label2, label3);
+                        text2, labelthird, text3, button,layout2);
                     }
 
+                    
+                    
+                    layout.setPrefSize(900,900);
+                    primaryStage.setScene(new Scene(layout));
 
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     layout.getChildren().addAll(button2);
                     
-
-                    
-                    layout.setPrefSize(900,900);
-                    primaryStage.setScene(new Scene(layout));
                     primaryStage.show();
                     
                 }
@@ -201,7 +205,7 @@ public class FitnessCalculatorCS extends Application {
                         
                         //Creating the Bar chart
                         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis); 
-                        barChart.setTitle("Expect Weight vs. Actual Weight");
+                        barChart.setTitle("Expected Weight vs. Actual Weight");
                         
                         //Prepare XYChart.Series objects by setting data       
                         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
@@ -210,16 +214,25 @@ public class FitnessCalculatorCS extends Application {
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
 
-                        for(int i=0; i< number; i++){
-                            series1.getData().add(new XYChart.Data<>("Name 1", 1.0));
-                            series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
-                            series2.getData().add(new XYChart.Data<>("Name 1", 5.0));
-                            series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
-
-                            //Setting the data to bar chart       
-                            barChart.getData().addAll(series1, series2);
-
+                        for(int i=0; i<number;i++){
+                            System.out.println(nameArray[i]);
                         }
+
+                        for(int i=0; i< number; i++){
+                            
+                            series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
+                            //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
+                            //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
+    
+
+                            series2.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //actual
+                            //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
+                            //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
+
+                            //Setting the data to bar chart     
+                            barChart.getData().addAll(series1, series2);
+                        }
+                        
                         
                         
                         //Creating a Group object 
@@ -262,15 +275,11 @@ public class FitnessCalculatorCS extends Application {
                 
         });
     }
-<<<<<<< HEAD
-
-=======
     public static void printData() throws Exception { // need to add parameters so i can export data
         // initialise variables
         String fileLocation = "export.csv";
         File file = new File(fileLocation);
         FileWriter writer = new FileWriter(file);
-
         if (!file.exists()) {
             file.createNewFile();
             writer.write("title, title, more titles"); // Writes the title of the csv file if it wasn't made yet, will 
@@ -279,5 +288,5 @@ public class FitnessCalculatorCS extends Application {
 
         writer.close();
     }
->>>>>>> 65bde9bc69c51f56d54690f331648ff097205b20
+
 }
