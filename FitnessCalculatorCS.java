@@ -401,13 +401,5 @@ public class FitnessCalculatorCS extends Application {
             }
         }
     }
-<<<<<<< HEAD
     
-} 
-=======
-=======
->>>>>>> 65bde9bc69c51f56d54690f331648ff097205b20
->>>>>>> 6efa7af486a9c9d6d7af9f2ed0e673fec2f492a3
->>>>>>> 5cb978a2fbede4984ca0b2fff2ec0fa6286c956b
 }
->>>>>>> feb440e11a5e46158771611965a0fd4d23e41798
