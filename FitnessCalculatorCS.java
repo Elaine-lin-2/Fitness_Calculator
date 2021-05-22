@@ -214,7 +214,7 @@ public class FitnessCalculatorCS extends Application {
                             series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
                             //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
                             //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
-                            
+
                             series2.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //actual
                             //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
                             //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
@@ -305,19 +305,11 @@ public class FitnessCalculatorCS extends Application {
     }
 
     /*
-<<<<<<< HEAD
     * Author: Tiffany
     * Loops through the array of each student's maximum weight that they can (in theory) lift, and provides everyone with a personal report (containing ways to improve)
     * @param expectedWeight - the array of all the student's calculated 1RM values
     * no return
     * */
-=======
-     * Author: Tiffany
-     * Loops through the array of each student's maximum weight that they can (in theory) lift, and provides everyone with a personal report (containing ways to improve)
-     * @param expectedWeight - the array of all the student's calculated 1RM values
-     * no return
-     * */
->>>>>>> feb440e11a5e46158771611965a0fd4d23e41798
     public static void analyse(String[] expected1RMArray){
         // Create double array for 1RM values
         double[] expectedDoubleArray = new double[expected1RMArray.length];
