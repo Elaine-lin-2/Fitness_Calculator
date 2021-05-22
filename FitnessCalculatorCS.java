@@ -65,8 +65,8 @@ public class FitnessCalculatorCS extends Application {
             primaryStage.show();
             Menu menu = new Menu("Menu");
             MenuItem menuItem1 = new MenuItem("Enter user information");
-            MenuItem menuItem2 = new MenuItem("Calculate expected weight and print bar graph");
-            MenuItem menuItem3 = new MenuItem("Generate Individualized report");
+            MenuItem menuItem2 = new MenuItem("Generate Individualized report");
+            MenuItem menuItem3 = new MenuItem("Calculate expected weight and print bar graph");
             
             menu.getItems().add(menuItem1);
             menu.getItems().add(menuItem2);
@@ -160,18 +160,30 @@ public class FitnessCalculatorCS extends Application {
                     
                     primaryStage.setTitle("Expected weights");
                     Label label= new Label();
+                    
                     label.setText("    Calculating the expected weights!");
                     VBox layout= new VBox(5);
             
-                    Button button2= new Button("Go back to menu");
-                    button2.setOnAction(f -> primaryStage.setScene(scene));
-                    layout.getChildren().addAll(label, button2);
+                    Button button2 = new Button ("individual reports");
+                    button2.setOnAction (f -> {
+                        analyse(expected1RMArray, primaryStage, scene, layout);
+                    });
+
+                    Button button3= new Button("Go back to menu");
+                    button3.setOnAction(f -> primaryStage.setScene(scene));
+                    
+                    //testing(primaryStage, scene, layout);
+
+                    layout.getChildren().addAll(label, button3, button2);
+                    
+
                     Scene scene= new Scene(layout, 500, 500);
                     primaryStage.setScene(scene);
                     primaryStage.show();
                     
                 }
             };
+
             menuItem2.setOnAction(event2);
             EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
                 
@@ -183,6 +195,8 @@ public class FitnessCalculatorCS extends Application {
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     Button button3= new Button("Show bar graph");
+
+                    
 
                     button3.setOnAction(f -> {
                         CategoryAxis xAxis = new CategoryAxis();  
@@ -239,7 +253,10 @@ public class FitnessCalculatorCS extends Application {
                             
                         //Displaying the contents of the stage
                         primaryStage.show(); 
+
                     });
+
+
                     VBox layout= new VBox(5);
                     layout.getChildren().addAll(label, button2, button3);
                     
@@ -310,96 +327,119 @@ public class FitnessCalculatorCS extends Application {
     * @param expectedWeight - the array of all the student's calculated 1RM values
     * no return
     * */
-    public static void analyse(String[] expected1RMArray){
+
+    public static void analyse(String[] expected1RMArray,Stage primaryStage,Scene scene, VBox layout){
         // Create double array for 1RM values
         double[] expectedDoubleArray = new double[expected1RMArray.length];
+        
+        
+            
+        
         for (int i = 0; i < expected1RMArray.length; i++){
             // Convert from string array to double array
             expectedDoubleArray[i] = Double.parseDouble(expected1RMArray[i]);
             // 0-59
+            Label label= new Label(); 
+            label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
+            
             if ((expectedDoubleArray[i] > 0) && (expectedDoubleArray[i] < 60)){
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. Do 1 set of as many slow and controlled pushups as you can until failure");
-                System.out.println("2. (Endurance improvement) Use a weight that is 70% of your 1RM and do pull ups for 6 sets of 15 reps");
-                System.out.println("3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do bicep curls for 5 sets of 10 reps");
-                System.out.println("4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do deadlifts for 3 sets of 3-4 reps");
-                System.out.println("5. (Push limits) Use a weight that is 95% of your 1RM and do for 2 sets of chest presses (sitting and/or standing) for 1-3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:"+
+                "(A maximum of 30s rests between each set and 45-60s between exercises)" + 
+                "1. Do 1 set of as many slow and controlled pushups as you can until failure" + 
+                "2. (Endurance improvement) Use a weight that is 70% of your 1RM and do pull ups for 6 sets of 15 reps"+
+                "3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do bicep curls for 5 sets of 10 reps"+
+                "4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do deadlifts for 3 sets of 3-4 reps"+
+                "5. (Push limits) Use a weight that is 95% of your 1RM and do for 2 sets of chest presses (sitting and/or standing) for 1-3 reps (have a spotter stand-by for this)"+
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+                
             }
-            // 60-149
             else if ((expectedDoubleArray[i] >= 60) && (expectedDoubleArray[i] < 150)){
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. Do 2 sets of as many slow and controlled pushups as you can until failure");
-                System.out.println("2. Hold a steady plank (no weights) for 2-3 minutes");
-                System.out.println("3. (Endurance improvement) Use a weight that is 70% of your 1RM and do shoulder presses for 7 sets of 12 reps");
-                System.out.println("4. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do military/overhead presses for 4 sets of 12 reps");
-                System.out.println("5. (Power and speed improvement) Use a weight that is 90% of your 1RM and do smith machine squats for 3 sets of 3-4 reps");
-                System.out.println("6. (Push limits) Use a weight that is 95% of your 1RM and do for 2-3 sets of power cleans for 1-3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:"+
+                "(A maximum of 30s rests between each set and 45-60s between exercises)" + 
+                "1. Do 2 sets of as many slow and controlled pushups as you can until failure" + 
+                "2. Hold a steady plank (no weights) for 2-3 minutes"+
+                "3. (Endurance improvement) Use a weight that is 70% of your 1RM and do shoulder presses for 7 sets of 12 reps"+
+                "4. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do military/overhead presses for 4 sets of 12 reps"+
+                "5. (Power and speed improvement) Use a weight that is 90% of your 1RM and do smith machine squats for 3 sets of 3-4 reps"+
+                "6. (Push limits) Use a weight that is 95% of your 1RM and do for 2-3 sets of power cleans for 1-3 reps (have a spotter stand-by for this)" + 
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
             }
             // 150-199
             else if ((expectedDoubleArray[i] >= 150) && (expectedDoubleArray[i] < 200)){
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. Do 1 set of as many muscle ups as you can (just get reps in, form doesn’t matter as much for now)");
-                System.out.println("2. (Endurance improvement) Use a weight that is 70% of your 1RM and do pull ups for 10 sets of 10 reps");
-                System.out.println("3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do lat pull downs for 7 sets of 7 reps");
-                System.out.println("4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do split squats for 4 sets of 3-4 reps");
-                System.out.println("5. (Push limits) Use a weight that is 95% of your 1RM and do for 2 sets of supine presses for 2-3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:"+
+                "(A maximum of 30s rests between each set and 45-60s between exercises)" + 
+                "1. Do 1 set of as many muscle ups as you can (just get reps in, form doesn’t matter as much for now)" + 
+                "2. (Endurance improvement) Use a weight that is 70% of your 1RM and do pull ups for 10 sets of 10 reps" +
+                "3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do lat pull downs for 7 sets of 7 reps"+
+                "4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do split squats for 4 sets of 3-4 reps"+
+                "5. (Push limits) Use a weight that is 95% of your 1RM and do for 2 sets of supine presses for 2-3 reps (have a spotter stand-by for this)"+
+                "6. (Push limits) Use a weight that is 95% of your 1RM and do for 2-3 sets of power cleans for 1-3 reps (have a spotter stand-by for this)" + 
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
             }
             // 200-249
+            
+
             else if ((expectedDoubleArray[i] >= 200) && (expectedDoubleArray[i] < 250)){
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. (Endurance improvement) Use a weight that is 70% of your 1RM and do single arm dumbbell rows for 7 sets of 20 reps (occasionally alternate between arms)");
-                System.out.println("2. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do weighted push ups for 7 sets of 10 reps");
-                System.out.println("3. (Power and speed improvement) Use a weight that is 90% of your 1RM and do back squats for 5 sets of 4-5 reps");
-                System.out.println("4. (Push limits) Use a weight that is 95% of your 1RM and do for 3 sets of bench presses for 3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("(A maximum of 30s rests between each set and 45-60s between exercises)" +
+                "1. (Endurance improvement) Use a weight that is 70% of your 1RM and do single arm dumbbell rows for 7 sets of 20 reps (occasionally alternate between arms)" + 
+                "2. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do weighted push ups for 7 sets of 10 reps" +
+                "3. (Power and speed improvement) Use a weight that is 90% of your 1RM and do back squats for 5 sets of 4-5 reps" +
+                "4. (Push limits) Use a weight that is 95% of your 1RM and do for 3 sets of bench presses for 3 reps (have a spotter stand-by for this)"+
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
             }
+
             // 250-299
             else if ((expectedDoubleArray[i] >= 250) && (expectedDoubleArray[i] < 300)){
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. Hold a plank, carrying a fairly comfortable weight, for as long as you can until failure (at least 4 minutes)");
-                System.out.println("2. (Endurance improvement) Use a weight that is 70% of your 1RM and do muscle ups for 6-7 sets of 12 reps");
-                System.out.println("3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do bicep curls for 5 sets of 12 reps");
-                System.out.println("4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do tricep pushdowns for 4 sets of 4 reps");
-                System.out.println("5. (Push limits) Use a weight that is 95% of your 1RM and do skullcrushers for 3 sets of 3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:" +
+                "(A maximum of 30s rests between each set and 45-60s between exercises)" + 
+                "1. Hold a plank, carrying a fairly comfortable weight, for as long as you can until failure (at least 4 minutes)" + 
+                "2. (Endurance improvement) Use a weight that is 70% of your 1RM and do muscle ups for 6-7 sets of 12 reps" + 
+                "3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do bicep curls for 5 sets of 12 reps" + 
+                "4. (Power and speed improvement) Use a weight that is 90% of your 1RM and do tricep pushdowns for 4 sets of 4 reps" + 
+                "5. (Push limits) Use a weight that is 95% of your 1RM and do skullcrushers for 3 sets of 3 reps (have a spotter stand-by for this)" +
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+                
             }
             // 300+
             else {
-                System.out.println("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
-                System.out.println("(A maximum of 30s rests between each set and 45-60s between exercises)");
-                System.out.println();
-                System.out.println("1. (Endurance improvement) Use a weight that is 70% of your 1RM and do bicep curls for 10 sets of 12 reps");
-                System.out.println("2. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do seated low rows for 8 sets of 10 reps");
-                System.out.println("3. (Power and speed improvement) Use a weight that is 90% of your 1RM and do back squats for 4 sets of 3-4 reps");
-                System.out.println("4. (Push limits) Use a weight that is 95% of your 1RM and do for 3 sets of deadlifts for 3 reps (have a spotter stand-by for this)");
-                System.out.println();
-                System.out.println("**Try to practice these as consistently as possible in order to see improvements/success!");
-                System.out.println("Check out the link for more information: https://barbend.com/how-to-increase-strength/");
+
+                label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:" +
+                "(A maximum of 30s rests between each set and 45-60s between exercises)" +
+                "1. (Endurance improvement) Use a weight that is 70% of your 1RM and do bicep curls for 10 sets of 12 reps" +
+                "2. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do seated low rows for 8 sets of 10 reps" +
+                "3. (Power and speed improvement) Use a weight that is 90% of your 1RM and do back squats for 4 sets of 3-4 reps" + 
+                "4. (Push limits) Use a weight that is 95% of your 1RM and do for 3 sets of deadlifts for 3 reps (have a spotter stand-by for this)" + 
+                "**Try to practice these as consistently as possible in order to see improvements/success!" + 
+                "Check out the link for more information: https://barbend.com/how-to-increase-strength/");
             }
+            
+            layout.getChildren().addAll(label);
         }
+        
     }
+
+    /*
+    public static void testing(Stage primaryStage,Scene scene, VBox layout){
+        
+        Label label= new Label();
+        
+        label.setText("Hello");
+        
+        layout.getChildren().addAll(label);
+        //scene= new Scene(layout, 500, 500);
+        
+    }
+    */
     
 }
