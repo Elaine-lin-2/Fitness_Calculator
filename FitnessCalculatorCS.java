@@ -38,12 +38,33 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+import javafx.scene.control.ScrollBar;
+import javafx.geometry.Orientation; 
+import javafx.scene.control.ScrollPane;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+
+
 public class FitnessCalculatorCS extends Application {
     public static void main(String[] args) {
         launch(args);
         //add methods into start(); instead of main
     }
-    public void start(Stage primaryStage) {
+
+    public void start(Stage primaryStage){
         primaryStage.setTitle("Student information");
         Label labelfirst= new Label("    How many students would you like to record?");
         Label label1= new Label();
@@ -55,6 +76,7 @@ public class FitnessCalculatorCS extends Application {
         primaryStage.setScene(scene1);
         primaryStage.show();
         button.setOnAction(f -> {
+
             //user menu
             primaryStage.setTitle("Menu");
             MenuBar menuBar = new MenuBar();
@@ -74,6 +96,7 @@ public class FitnessCalculatorCS extends Application {
 
             //TO BE MODIFIED
             int number = Integer.parseInt(text1.getText());
+
             String []nameArray = new String[number];
             String []genderArray = new String[number];
             String []numArray = new String[number];
@@ -90,10 +113,31 @@ public class FitnessCalculatorCS extends Application {
         //}
 
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+                
                 public void handle(ActionEvent e){
-                    //text
+                    
+                    final ScrollBar sc = new ScrollBar();
+                    final VBox vb = new VBox(5);
+
+                    Group root = new Group();
+                    Scene scene1 = new Scene(root, 900, 900);
+
+                    primaryStage.setScene(scene1);
                     primaryStage.setTitle("User Information");
-                    VBox layout= new VBox(5);
+
+                    root.getChildren().addAll(vb, sc);
+                
+                    //ScrollPane scroll = new ScrollPane();
+                    //scroll.setContent(vb);
+                    
+                    vb.setLayoutX(5);
+                    vb.setSpacing(10);
+
+                    sc.setLayoutX(scene1.getWidth()-sc.getWidth());
+                    sc.setMin(0);
+                    sc.setOrientation(Orientation.VERTICAL);
+                    sc.setPrefHeight(900);
+                    sc.setMax(900);
 
                     for(int i=0; i<number; i++){
 
@@ -109,51 +153,48 @@ public class FitnessCalculatorCS extends Application {
                         Label label3= new Label();
                         TextField text3= new TextField();
 
-                        
                         Button button= new Button("Save and show");
 
                         //not sure how to add array here -> it won't add itself
-
-
                         button.setOnAction(f -> {
+
                             label1.setText("    Student name:  " + text1.getText());
                             label2.setText("    Their gender is: " + text2.getText());
                             label3.setText("    The max number of they can do: " + text3.getText());
-
-                            layout.getChildren().addAll(label, label1, label2, label3);
+                            //nameArray[0] = text1.getText();
+                            //nameArray[1] = text1.getText();
+                            
+                            vb.getChildren().addAll(label, label1, label2, label3);
                         });
-
-                        VBox layout2= new VBox(5);  
-
+                        
                         nameArray[i] = text1.getText();
                         genderArray[i] = text2.getText();
                         numArray[i] = text3.getText();
 
-                        layout.getChildren().addAll(labelfirst, text1, labelsecond,
+                        VBox layout2= new VBox(5);
+
+                        vb.getChildren().addAll(labelfirst, text1, labelsecond,
                         text2, labelthird, text3, button,layout2);
                     }
 
-
-
-                    layout.setPrefSize(900,900);
-                    primaryStage.setScene(new Scene(layout));
-
+                    //add childrens to Vbox and properties
+                    sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
+                        Number old_val, Number new_val) -> {
+                        vb.setLayoutY(-new_val.doubleValue());
+                    });
+                    
                     Button button2= new Button("Go back to menu");
-                    button2.setOnAction(f -> primaryStage.setScene(scene));
-                    layout.getChildren().addAll(button2);
+                    button2.setOnAction(f -> primaryStage.setScene(scene)); 
+                    vb.getChildren().addAll(button2);
 
-
-
-                    layout.setPrefSize(900,900);
-                    primaryStage.setScene(new Scene(layout));
+                    primaryStage.setScene(scene1);
                     primaryStage.show();
 
-                }
-                
-            };
+                    }
+                };
             //call event
-            
             menuItem1.setOnAction(event);
+
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
@@ -166,7 +207,7 @@ public class FitnessCalculatorCS extends Application {
             
                     Button button2 = new Button ("individual reports");
                     button2.setOnAction (f -> {
-                        analyse(expected1RMArray, primaryStage, scene, layout);
+                        //analyse(expected1RMArray, primaryStage, scene, layout);
                     });
 
                     Button button3= new Button("Go back to menu");
@@ -176,14 +217,13 @@ public class FitnessCalculatorCS extends Application {
 
                     layout.getChildren().addAll(label, button3, button2);
                     
-
                     Scene scene= new Scene(layout, 500, 500);
+                    
                     primaryStage.setScene(scene);
                     primaryStage.show();
-                    
                 }
-            };
 
+            };
             menuItem2.setOnAction(event2);
             EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
                 
@@ -196,11 +236,10 @@ public class FitnessCalculatorCS extends Application {
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     Button button3= new Button("Show bar graph");
 
-                    
-
                     button3.setOnAction(f -> {
                         CategoryAxis xAxis = new CategoryAxis();  
                         xAxis.setCategories(FXCollections.<String>
+                        //Needs to be modified
                         observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4")));
                         xAxis.setLabel("Student name");
                         
@@ -219,9 +258,6 @@ public class FitnessCalculatorCS extends Application {
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
 
-                        for(int i=0; i<number;i++){
-                            System.out.println(nameArray[i]);
-                        }
 
                         for(int i=0; i< number; i++){
 
@@ -237,12 +273,9 @@ public class FitnessCalculatorCS extends Application {
                             barChart.getData().addAll(series1, series2);
                         }
 
-
-
                         //Creating a Group object 
                         Group root = new Group(barChart);
 
-                        
                         //Creating a scene object
                         Scene scene = new Scene(root, 600, 400);
                         //Setting title to the Stage
@@ -256,7 +289,6 @@ public class FitnessCalculatorCS extends Application {
 
                     });
 
-
                     VBox layout= new VBox(5);
                     layout.getChildren().addAll(label, button2, button3);
                     
@@ -264,8 +296,6 @@ public class FitnessCalculatorCS extends Application {
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 }
-                
-                
             };
             menuItem3.setOnAction(event3);
             //MenuBar menuBar = new MenuBar();
@@ -273,6 +303,7 @@ public class FitnessCalculatorCS extends Application {
 
         });
     }
+
     public static void printData() throws Exception { // need to add parameters so i can export data
         // initialise variables
         String fileLocation = "export.csv";
@@ -328,12 +359,10 @@ public class FitnessCalculatorCS extends Application {
     * no return
     * */
 
+    
     public static void analyse(String[] expected1RMArray,Stage primaryStage,Scene scene, VBox layout){
         // Create double array for 1RM values
         double[] expectedDoubleArray = new double[expected1RMArray.length];
-        
-        
-            
         
         for (int i = 0; i < expected1RMArray.length; i++){
             // Convert from string array to double array
@@ -413,7 +442,6 @@ public class FitnessCalculatorCS extends Application {
             }
             // 300+
             else {
-
                 label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:" +
                 "(A maximum of 30s rests between each set and 45-60s between exercises)" +
                 "1. (Endurance improvement) Use a weight that is 70% of your 1RM and do bicep curls for 10 sets of 12 reps" +
@@ -426,7 +454,6 @@ public class FitnessCalculatorCS extends Application {
             
             layout.getChildren().addAll(label);
         }
-        
     }
 
     /*
