@@ -10,8 +10,8 @@
 //file reading and writing
 import java.io.File;
 import java.io.FileWriter;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 //button, text, scene, label, text
 import javafx.application.Application;
@@ -114,7 +114,7 @@ public class FitnessCalculatorCS extends Application {
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 
-                public void handle(ActionEvent e){
+                public void handle(ActionEvent e) {
                     
                     //add scroll bar to the scene and set the stage
                     final ScrollBar sc = new ScrollBar();
@@ -133,63 +133,58 @@ public class FitnessCalculatorCS extends Application {
                     sc.setVisibleAmount(50);
                     sc.setMax(scene1.getHeight()*number);
 
-                    try{
-                        //generate a new CSV
-                        File outFile = new File("Students Info.csv");
-                        PrintWriter out = new PrintWriter(outFile);
+                    for (int i = 0; i < number; i++) {
 
-                        for(int i=0; i<number; i++){
+                    // Prompt student information based on the number of students
+                    Label labelfirst = new Label("    Enter student name");
+                    Label label1 = new Label();
+                    TextField text1 = new TextField();
+                    Label label = new Label("    Student " + (i + 1));
+                    Label labelsecond = new Label("    Enter student gender");
+                    Label label2 = new Label();
+                    TextField text2 = new TextField();
+                    Label labelthird = new Label("    Enter the max number of reps");
+                    Label label3 = new Label();
+                    TextField text3 = new TextField();
 
-                            //Prompt student information based on the number of students
-                            Label labelfirst= new Label("    Enter student name");
-                            Label label1= new Label();
-                            TextField text1= new TextField();
-                            Label label = new Label("    Student " + (i+1));
-                            Label labelsecond= new Label("    Enter student gender");
-                            Label label2= new Label();
-                            TextField text2= new TextField();
-                            Label labelthird= new Label("    Enter the max number of reps");
-                            Label label3= new Label();
-                            TextField text3= new TextField();
-                            
-                            //save and print the information
-                            Button button= new Button("Save and show");
-                            button.setOnAction(f -> {
-                            
-                                label1.setText("    Student name:  " + text1.getText());
-                                label2.setText("    Their gender is: " + text2.getText());
-                                label3.setText("    The max number of they can do: " + text3.getText());
-                            
-                                vb.getChildren().addAll(label, label1, label2, label3);
-                                printData(text1.getText(),text2.getText(), text3.getText(), out, outFile);
+                    // save and print the information
+                    Button button = new Button("Save and show");
+                    button.setOnAction(f -> {
 
-                            });
+                        label1.setText("    Student name:  " + text1.getText());
+                        label2.setText("    Their gender is: " + text2.getText());
+                        label3.setText("    The max number of they can do: " + text3.getText());
 
-                            VBox layout2= new VBox(5);
-
-                            //add elements to the scene
-                            vb.getChildren().addAll(labelfirst, text1, labelsecond,
-                            text2, labelthird, text3, button,layout2);
+                        vb.getChildren().addAll(label, label1, label2, label3);
+                        try {
+                            printData(text1.getText(), text2.getText(), text3.getText());
+                        }
+                        catch (IOException e1) {
+                            e1.printStackTrace();
                         }
 
-                        //scroll bar motion function
-                        sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
-                            Number old_val, Number new_val) -> {
+                    });
+
+                    VBox layout2 = new VBox(5);
+
+                    // add elements to the scene
+                    vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, button,
+                            layout2);
+                }
+
+                // scroll bar motion function
+                sc.valueProperty()
+                        .addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
                             vb.setLayoutY(-new_val.doubleValue());
                         });
-                        
-                        //Go back to menu button
-                        Button button2= new Button("Go back to menu");
-                        button2.setOnAction(f -> primaryStage.setScene(scene)); 
-                        vb.getChildren().addAll(button2);
-                        primaryStage.setScene(scene1);
-                        primaryStage.show();
 
-                    }
-                    //print error if it ever exists
-                    catch(FileNotFoundException g){
-                        System.out.println(g);
-                    }
+                // Go back to menu button
+                Button button2 = new Button("Go back to menu");
+                button2.setOnAction(f -> primaryStage.setScene(scene));
+                vb.getChildren().addAll(button2);
+                primaryStage.setScene(scene1);
+                primaryStage.show();
+
                 }
 
             };
@@ -326,17 +321,45 @@ public class FitnessCalculatorCS extends Application {
         });
     }
 
-    public static void printData(String name, String gender, String number, PrintWriter out, File outFile) { // need to add parameters so i can export data
+    /**
+     * @author Marc F
+     * 
+     * @param name - the name of the person
+     * @param gender - the gender of the person
+     * @param number - the max number of reps that the person can do
+     * @throws IOException if file is not found
+     */
+    public static void printData(String name, String gender, String number) throws IOException {
+        // Initialise Variables
+        String fileName = "student-info.csv";
+        File file = new File(fileName);
 
-        //This method should append to an existing CSV file, because information needs to be added in each time for each student
-        // adding in the all of the students' information once may not be possible as of right now
-        if (outFile.exists()) {
-            out.println(name);
-            out.println(gender);  
-            out.println(number);
+        String text = ""; // Text to use to export the data
+        String delimiter = ","; // If you wanna change the delimiter, change here
+
+        if (!file.exists()) {
+            file.createNewFile();
+            text += "Name,Gender,Max number of reps\n";
         }
 
-        out.close();
+        Scanner reader = new Scanner(file);
+
+        while (reader.hasNextLine()) {
+            text += reader.nextLine() + "\n";
+        }
+
+        FileWriter writer = new FileWriter(file);
+
+        text += name;
+        text += delimiter;
+        text += gender;
+        text += delimiter;
+        text += number;
+        
+        writer.write(text);
+
+        writer.close();
+        reader.close();
     }
 
     
