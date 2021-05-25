@@ -155,11 +155,12 @@ public class FitnessCalculatorCS extends Application {
 
                             label1.setText("    Student name:  " + text1.getText());
                             label2.setText("    Their gender is: " + text2.getText());
-                            label3.setText("    The max number of they can do: " + text3.getText());
+                            int numberReps = Integer.parseInt(text3.getText());
+                            label3.setText("    The max number of they can do: " + numberReps);
 
                             vb.getChildren().addAll(label, label1, label2, label3);
                             try {
-                                printData(iCopy + 1, text1.getText(), text2.getText(), text3.getText());
+                                printData(iCopy + 1, text1.getText(), text2.getText(), numberReps);
                             }
                             catch (IOException e1) {
                                 e1.printStackTrace();
@@ -262,7 +263,7 @@ public class FitnessCalculatorCS extends Application {
                         CategoryAxis xAxis = new CategoryAxis();  
                         xAxis.setCategories(FXCollections.<String>
                         //Needs to be modified
-                        observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4")));
+                        observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4"))); //to be modified after reading the CSV file
                         xAxis.setLabel("Student name");
                         
                         NumberAxis yAxis = new NumberAxis();
@@ -331,7 +332,7 @@ public class FitnessCalculatorCS extends Application {
      * @param number - the max number of reps that the person can do
      * @throws IOException if file is not found
      */
-    public static void printData(int studentNumber, String name, String gender, String number) throws IOException {
+    public static void printData(int studentNumber, String name, String gender, int number) throws IOException {
         // Initialise Variables
         String fileName = "student-info.csv";
         File file = new File(fileName);
@@ -408,7 +409,7 @@ public class FitnessCalculatorCS extends Application {
     }
 
     /*
-    * Author: Tiffany
+    * Author: Tiffany 
     * Loops through the array of each student's maximum weight that they can (in theory) lift, and provides everyone with a personal report (containing ways to improve)
     * @param expectedWeight - the array of all the student's calculated 1RM values
     * @param primaryStage - the primary window of the application
