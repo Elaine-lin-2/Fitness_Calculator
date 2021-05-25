@@ -9,6 +9,7 @@
 
 //file reading and writing
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -54,6 +55,19 @@ public class FitnessCalculatorCS extends Application {
     * */
 
     public void start(Stage primaryStage){
+
+        /* for testing
+        try {
+            String[][] whatthehell = readData();
+            for (String[] i: whatthehell) {
+                for (String j: i) {
+                    System.out.println(j);
+                }
+            }
+        } catch (FileNotFoundException e2) {
+            e2.printStackTrace();
+        }
+        */
 
         //Set title of the first scene
         primaryStage.setTitle("Student information");
@@ -324,8 +338,8 @@ public class FitnessCalculatorCS extends Application {
     }
 
     /**
+     * Exports the data given to a csv file
      * @author Marc F
-     * 
      * @param name - the name of the person
      * @param gender - the gender of the person
      * @param number - the max number of reps that the person can do
@@ -339,19 +353,24 @@ public class FitnessCalculatorCS extends Application {
         String text = ""; // Text to use to export the data
         String delimiter = ","; // If you wanna change the delimiter, change here
 
+        // Create a new file if it isnt made yet
         if (!file.exists()) {
             file.createNewFile();
             text += "Student Number,Name,Gender,Max number of reps\n";
         }
 
+        // Initialise scanner
         Scanner reader = new Scanner(file);
 
+        // Get the original contents of the csv file
         while (reader.hasNextLine()) {
             text += reader.nextLine() + "\n";
         }
 
+        // Initialise FileWriter
         FileWriter writer = new FileWriter(file);
 
+        // Add text by every category that is needed
         text += "Student " + studentNumber;
         text += delimiter;
         text += name;
@@ -360,10 +379,56 @@ public class FitnessCalculatorCS extends Application {
         text += delimiter;
         text += number;
         
+        // Write the csv file back
         writer.write(text);
 
+        // Close writer and reader
         writer.close();
         reader.close();
+    }
+
+    public static void printTxt(String text) {
+        // will do this after
+    }
+
+    /**
+     * Reads the data from the csv file and puts into an array
+     * @author Marc F
+     * @return 2D array containing the contents of the csv array
+     * @throws FileNotFoundException if the file is not found
+     */
+    public static String[][] readData() throws FileNotFoundException {
+        // Initialise Variables
+        File file = new File("student-info.csv");
+        Scanner reader = new Scanner(file);
+        int length = 0;
+
+        reader.nextLine(); // Need to skip the first line which is the title
+
+        // Add length for each line to see how many lines there are to create the ULTIMATE string
+        while (reader.hasNextLine()) {
+            length++;
+            reader.nextLine();
+        }
+
+        String[][] ultimateString = new String[length][4]; // the ULTIMATE string basically containing the entire csv into one 2d array, its amazing i know
+
+        reader = new Scanner(file); // reinitalise scanner to get it back to the top of the file
+        reader.nextLine(); 
+
+        length = 0; // reset length to use to populate the array
+
+        while (reader.hasNextLine()) {
+            // split each part of the file and populate the array with it
+            String[] line = reader.nextLine().split(",");
+            for (int i = 0; i < 4; i++) {
+                ultimateString[length][i] = line[i];
+            }
+            length++;
+        }
+
+        reader.close();
+        return ultimateString;
     }
 
     /**
