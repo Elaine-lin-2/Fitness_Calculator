@@ -362,7 +362,13 @@ public class FitnessCalculatorCS extends Application {
         reader.close();
     }
 
-    
+    /**
+     * @author Krishna 
+     * Calculates expected 1RM and returns string to be stored in expected1RMArray
+     * @param maxRep - array of max number of reps a person can do 
+     * @param maxWeight - array of the max weight a person can lift 
+     * @return oneRMAArray - calculated 1RM string 
+     */
 
     public static String[] EpleyCalculation(String []maxRep, String []maxWeight) {
         //1RM = w(1 + r/30) --> Epley's Formula
