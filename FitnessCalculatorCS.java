@@ -135,41 +135,43 @@ public class FitnessCalculatorCS extends Application {
 
                     for (int i = 0; i < number; i++) {
 
-                    // Prompt student information based on the number of students
-                    Label labelfirst = new Label("    Enter student name");
-                    Label label1 = new Label();
-                    TextField text1 = new TextField();
-                    Label label = new Label("    Student " + (i + 1));
-                    Label labelsecond = new Label("    Enter student gender");
-                    Label label2 = new Label();
-                    TextField text2 = new TextField();
-                    Label labelthird = new Label("    Enter the max number of reps");
-                    Label label3 = new Label();
-                    TextField text3 = new TextField();
+                        final int iCopy = i;
 
-                    // save and print the information
-                    Button button = new Button("Save and show");
-                    button.setOnAction(f -> {
+                        // Prompt student information based on the number of students
+                        Label labelfirst = new Label("    Enter student name");
+                        Label label1 = new Label();
+                        TextField text1 = new TextField();
+                        Label label = new Label("    Student " + (i + 1));
+                        Label labelsecond = new Label("    Enter student gender");
+                        Label label2 = new Label();
+                        TextField text2 = new TextField();
+                        Label labelthird = new Label("    Enter the max number of reps");
+                        Label label3 = new Label();
+                        TextField text3 = new TextField();
 
-                        label1.setText("    Student name:  " + text1.getText());
-                        label2.setText("    Their gender is: " + text2.getText());
-                        label3.setText("    The max number of they can do: " + text3.getText());
+                        // save and print the information
+                        Button button = new Button("Save and show");
+                        button.setOnAction(f -> {
 
-                        vb.getChildren().addAll(label, label1, label2, label3);
-                        try {
-                            printData(text1.getText(), text2.getText(), text3.getText());
-                        }
-                        catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                            label1.setText("    Student name:  " + text1.getText());
+                            label2.setText("    Their gender is: " + text2.getText());
+                            label3.setText("    The max number of they can do: " + text3.getText());
 
-                    });
+                            vb.getChildren().addAll(label, label1, label2, label3);
+                            try {
+                                printData(iCopy + 1, text1.getText(), text2.getText(), text3.getText());
+                            }
+                            catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
 
-                    VBox layout2 = new VBox(5);
+                        });
 
-                    // add elements to the scene
-                    vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, button,
-                            layout2);
+                        VBox layout2 = new VBox(5);
+
+                        // add elements to the scene
+                        vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, button,
+                                layout2);
                 }
 
                 // scroll bar motion function
@@ -329,7 +331,7 @@ public class FitnessCalculatorCS extends Application {
      * @param number - the max number of reps that the person can do
      * @throws IOException if file is not found
      */
-    public static void printData(String name, String gender, String number) throws IOException {
+    public static void printData(int studentNumber, String name, String gender, String number) throws IOException {
         // Initialise Variables
         String fileName = "student-info.csv";
         File file = new File(fileName);
@@ -339,7 +341,7 @@ public class FitnessCalculatorCS extends Application {
 
         if (!file.exists()) {
             file.createNewFile();
-            text += "Name,Gender,Max number of reps\n";
+            text += "Student Number,Name,Gender,Max number of reps\n";
         }
 
         Scanner reader = new Scanner(file);
@@ -350,6 +352,8 @@ public class FitnessCalculatorCS extends Application {
 
         FileWriter writer = new FileWriter(file);
 
+        text += "Student " + studentNumber;
+        text += delimiter;
         text += name;
         text += delimiter;
         text += gender;
