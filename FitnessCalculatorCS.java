@@ -55,20 +55,6 @@ public class FitnessCalculatorCS extends Application {
     * */
 
     public void start(Stage primaryStage){
-
-        /* for testing
-        try {
-            String[][] whatthehell = readData();
-            for (String[] i: whatthehell) {
-                for (String j: i) {
-                    System.out.println(j);
-                }
-            }
-        } catch (FileNotFoundException e2) {
-            e2.printStackTrace();
-        }
-        */
-
         //Set title of the first scene
         primaryStage.setTitle("Student information");
 
