@@ -10,26 +10,24 @@
 //file reading and writing
 import java.io.File;
 import java.io.FileWriter;
-//button
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+//button, text, scene, label, text
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-//button events
 import javafx.scene.control.Button;
-//import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-//text
-//import static javafx.application.Application.launch;
-//import javafx.scene.text.*;
 import javafx.scene.control.TextField;
 
-//graphs
+//graphics 
 import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.scene.Group;
@@ -37,12 +35,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-
 import javafx.scene.control.ScrollBar;
 import javafx.geometry.Orientation; 
-
 import javafx.beans.value.ObservableValue;
-
 
 public class FitnessCalculatorCS extends Application {
     public static void main(String[] args) {
@@ -50,39 +45,57 @@ public class FitnessCalculatorCS extends Application {
         //add methods into start(); instead of main
     }
 
+    /*
+    * Author: Elaine L
+    * Run the program outside the terminal using favafx
+    *
+    * @param - new stage 
+    *@ return - no return
+    * */
+
     public void start(Stage primaryStage){
+
+        //Set title of the first scene
         primaryStage.setTitle("Student information");
+
+        //prompt response from the user
         Label labelfirst= new Label("    How many students would you like to record?");
         Label label1= new Label();
         Button button= new Button("OK");
         TextField text1= new TextField();
         VBox layout= new VBox(5);
+
+        //add labels, texts, buttons
         layout.getChildren().addAll(labelfirst,text1, button, label1);
         Scene scene1= new Scene(layout, 500, 500);
         primaryStage.setScene(scene1);
         primaryStage.show();
+
+        //create button event
         button.setOnAction(f -> {
 
-            //user menu
+            //create user menu and menu bar
             primaryStage.setTitle("Menu");
             MenuBar menuBar = new MenuBar();
             VBox vBox = new VBox(menuBar);
             Scene scene = new Scene(vBox, 300, 400);
     
+            //set scene
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            //set & add the three options
             Menu menu = new Menu("Menu");
             MenuItem menuItem1 = new MenuItem("Enter user information");
             MenuItem menuItem2 = new MenuItem("Generate Individualized report");
             MenuItem menuItem3 = new MenuItem("Calculate expected weight and print bar graph");
-            
             menu.getItems().add(menuItem1);
             menu.getItems().add(menuItem2);
             menu.getItems().add(menuItem3);
 
-            //TO BE MODIFIED
             int number = Integer.parseInt(text1.getText());
 
+            //define neccessary arrays
             String []nameArray = new String[number];
             String []genderArray = new String[number];
             String []numArray = new String[number];
@@ -98,27 +111,21 @@ public class FitnessCalculatorCS extends Application {
         //} while (true);
         //}
 
+            //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
                     
+                    //add scroll bar to the scene and set the stage
                     final ScrollBar sc = new ScrollBar();
                     final VBox vb = new VBox(5);
-
                     Group root = new Group();
                     Scene scene1 = new Scene(root, 500, 900);
-
                     primaryStage.setScene(scene1);
                     primaryStage.setTitle("User Information");
-
                     root.getChildren().addAll(vb, sc);
-                
-                    //ScrollPane scroll = new ScrollPane();
-                    //scroll.setContent(vb);
-                    
                     vb.setLayoutX(10);
                     vb.setSpacing(10);
-
                     sc.setLayoutX(scene1.getWidth()-sc.getWidth());
                     sc.setMin(0);
                     sc.setOrientation(Orientation.VERTICAL);
@@ -126,85 +133,85 @@ public class FitnessCalculatorCS extends Application {
                     sc.setVisibleAmount(50);
                     sc.setMax(scene1.getHeight()*number);
 
-                    for(int i=0; i<number; i++){
+                    try{
+                        //generate a new CSV
+                        File outFile = new File("Students Info.csv");
+                        PrintWriter out = new PrintWriter(outFile);
 
-                        Label labelfirst= new Label("    Enter student name");
-                        Label label1= new Label();
-                        TextField text1= new TextField();
-                        Label label = new Label("    Student " + (i+1));
+                        for(int i=0; i<number; i++){
 
-                        Label labelsecond= new Label("    Enter student gender");
-                        Label label2= new Label();
-                        TextField text2= new TextField();
-                        Label labelthird= new Label("    Enter the max number of reps");
-                        Label label3= new Label();
-                        TextField text3= new TextField();
-
-                        Button button= new Button("Save and show");
-
-                        //not sure how to add array here -> it won't add itself
-                        button.setOnAction(f -> {
-
-                            label1.setText("    Student name:  " + text1.getText());
-                            label2.setText("    Their gender is: " + text2.getText());
-                            label3.setText("    The max number of they can do: " + text3.getText());
-                            /*
-                            nameArray[i] = text1.getText();
-                            genderArray[i] = text2.getText();
-                            numArray[i] = text3.getText();
-                            */
-                                
-                            //nameArray[0] = text1.getText();
-                            //nameArray[1] = text1.getText();
+                            //Prompt student information based on the number of students
+                            Label labelfirst= new Label("    Enter student name");
+                            Label label1= new Label();
+                            TextField text1= new TextField();
+                            Label label = new Label("    Student " + (i+1));
+                            Label labelsecond= new Label("    Enter student gender");
+                            Label label2= new Label();
+                            TextField text2= new TextField();
+                            Label labelthird= new Label("    Enter the max number of reps");
+                            Label label3= new Label();
+                            TextField text3= new TextField();
                             
-                            vb.getChildren().addAll(label, label1, label2, label3);
+                            //save and print the information
+                            Button button= new Button("Save and show");
+                            button.setOnAction(f -> {
+                            
+                                label1.setText("    Student name:  " + text1.getText());
+                                label2.setText("    Their gender is: " + text2.getText());
+                                label3.setText("    The max number of they can do: " + text3.getText());
+                            
+                                vb.getChildren().addAll(label, label1, label2, label3);
+                                printData(text1.getText(),text2.getText(), text3.getText(), out, outFile);
+
+                            });
+
+                            VBox layout2= new VBox(5);
+
+                            //add elements to the scene
+                            vb.getChildren().addAll(labelfirst, text1, labelsecond,
+                            text2, labelthird, text3, button,layout2);
+                        }
+
+                        //scroll bar motion function
+                        sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
+                            Number old_val, Number new_val) -> {
+                            vb.setLayoutY(-new_val.doubleValue());
                         });
                         
-                    
-
-                        VBox layout2= new VBox(5);
-
-                        vb.getChildren().addAll(labelfirst, text1, labelsecond,
-                        text2, labelthird, text3, button,layout2);
-                    }
-                    
-
-                    //add childrens to Vbox and properties
-                    sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
-                        Number old_val, Number new_val) -> {
-                        vb.setLayoutY(-new_val.doubleValue());
-                    });
-                    
-                    Button button2= new Button("Go back to menu");
-                    button2.setOnAction(f -> primaryStage.setScene(scene)); 
-                    vb.getChildren().addAll(button2);
-
-                    primaryStage.setScene(scene1);
-                    primaryStage.show();
+                        //Go back to menu button
+                        Button button2= new Button("Go back to menu");
+                        button2.setOnAction(f -> primaryStage.setScene(scene)); 
+                        vb.getChildren().addAll(button2);
+                        primaryStage.setScene(scene1);
+                        primaryStage.show();
 
                     }
-                };
-            //call event
+                    //print error if it ever exists
+                    catch(FileNotFoundException g){
+                        System.out.println(g);
+                    }
+                }
+
+            };
             menuItem1.setOnAction(event);
 
+            //call the second event (generate report)
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
 
+                    //add scroll bar
                     final ScrollBar sc = new ScrollBar();
                     final VBox vb = new VBox(5);
-
                     Group root = new Group();
                     Scene scene2 = new Scene(root, 500, 900);
 
+                    //set first scene
                     primaryStage.setScene(scene2);
                     primaryStage.setTitle("User Information");
-
                     root.getChildren().addAll(vb, sc);
-                
                     vb.setLayoutX(10);
                     vb.setSpacing(10);
-
                     sc.setLayoutX(scene2.getWidth()-sc.getWidth());
                     sc.setMin(0);
                     sc.setOrientation(Orientation.VERTICAL);
@@ -212,45 +219,48 @@ public class FitnessCalculatorCS extends Application {
                     sc.setVisibleAmount(50);
                     sc.setMax(scene2.getHeight()*number);
 
+                    //scroll bar motion 
                     sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
                         Number old_val, Number new_val) -> {
                         vb.setLayoutY(-new_val.doubleValue());
                     });
                     
+                    //generate individualized reports
                     primaryStage.setTitle("Reports");
                     Label label= new Label();
-                    
                     label.setText("    Generating individual reports!");
-                    
                     Button button2 = new Button ("individual reports");
                     button2.setOnAction (f -> {
                         //analyse(expected1RMArray, primaryStage, scene, layout);
                     });
 
+                    //go back to the main menu
                     Button button3= new Button("Go back to menu");
                     button3.setOnAction(f -> primaryStage.setScene(scene));
                     
-                    //testing(primaryStage, scene, layout);
+                    //add element to scene
                     vb.getChildren().addAll(label, button3, button2);
-                    
                     primaryStage.setScene(scene2);
                     primaryStage.show();
                 }
 
             };
             menuItem2.setOnAction(event2);
+
+            //call the third event
             EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
                     
+                    //create first scene
                     primaryStage.setTitle("Expected Weights + Bar Graph");
                     Label label= new Label();
                     label.setText("    Calculating the expected weights!");
-                    //
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     Button button3= new Button("Show bar graph");
 
+                    //create double bar graph
                     button3.setOnAction(f -> {
                         CategoryAxis xAxis = new CategoryAxis();  
                         xAxis.setCategories(FXCollections.<String>
@@ -272,7 +282,6 @@ public class FitnessCalculatorCS extends Application {
     
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
-
 
                         for(int i=0; i< number; i++){
 
@@ -304,35 +313,33 @@ public class FitnessCalculatorCS extends Application {
 
                     });
 
+                    //set the scene
                     VBox layout= new VBox(5);
                     layout.getChildren().addAll(label, button2, button3);
-                    
                     Scene scene= new Scene(layout, 500, 500);
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 }
             };
             menuItem3.setOnAction(event3);
-            //MenuBar menuBar = new MenuBar();
             menuBar.getMenus().add(menu);
-
         });
     }
 
-    public static void printData() throws Exception { // need to add parameters so i can export data
-        // initialise variables
-        String fileLocation = "export.csv";
-        File file = new File(fileLocation);
-        FileWriter writer = new FileWriter(file);
+    public static void printData(String name, String gender, String number, PrintWriter out, File outFile) { // need to add parameters so i can export data
 
-        if (!file.exists()) {
-            file.createNewFile();
-            writer.write("title, title, more titles"); // Writes the title of the csv file if it wasn't made yet, will 
-                                                       // change title to actual titles later once i know exactly what they are
+        //This method should append to an existing CSV file, because information needs to be added in each time for each student
+        // adding in the all of the students' information once may not be possible as of right now
+        if (outFile.exists()) {
+            out.println(name);
+            out.println(gender);  
+            out.println(number);
         }
 
-        writer.close();
+        out.close();
     }
+
+    
 
     public static String[] EpleyCalculation(String []maxRep, String []maxWeight) {
         //1RM = w(1 + r/30) --> Epley's Formula
@@ -483,5 +490,6 @@ public class FitnessCalculatorCS extends Application {
         
     }
     */
+    
     
 }
