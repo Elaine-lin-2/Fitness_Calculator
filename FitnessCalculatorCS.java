@@ -110,12 +110,22 @@ public class FitnessCalculatorCS extends Application {
             int number = Integer.parseInt(text1.getText());
 
             //define neccessary arrays
-            String []nameArray = new String[number];
+            String[][] csvArray;
             String []genderArray = new String[number];
             String []numArray = new String[number];
             String []maxRepArray = new String[number]; //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
             String []maxWeightArray = new String[number]; //--> Added            -just wanted to make sure my addition didn't disrupt your plans loll)
             String []expected1RMArray = new String[number]; //--> Added
+            String []nameArray = new String[number];
+
+            try {
+                csvArray = readData();
+                numArray = csvArray[1];
+                genderArray = csvArray[2];
+                maxRepArray = csvArray[3];
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
         //do //{
             //Subs in the entire max rep and max weight arrays and returns an array of expected 1RM results
@@ -262,6 +272,7 @@ public class FitnessCalculatorCS extends Application {
                 
                 public void handle(ActionEvent e){
                     
+
                     //create first scene
                     primaryStage.setTitle("Expected Weights + Bar Graph");
                     Label label= new Label();
@@ -295,13 +306,22 @@ public class FitnessCalculatorCS extends Application {
 
                         for(int i=0; i< number; i++){
 
-                            series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
-                            //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
-                            //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
+                            try{
+                                final String[][] csvArray = readData(); // Have to do it here because I need to use a try catch statement
+                                final String[] nameArray = csvArray[1];
 
-                            series2.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //actual
-                            //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
-                            //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
+
+                                series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
+                                //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
+                                //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
+    
+                                series2.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //actual
+                                //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
+                                //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
+                            }
+                            catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
 
                             //Setting the data to bar chart     
                             barChart.getData().addAll(series1, series2);
