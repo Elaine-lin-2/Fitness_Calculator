@@ -433,7 +433,7 @@ public class FitnessCalculatorCS extends Application {
             reader.nextLine();
         }
 
-        String[][] ultimateString = new String[length][4]; // the ULTIMATE string basically containing the entire csv into one 2d array, its amazing i know
+        String[][] csvArray = new String[length][4]; // the ULTIMATE string basically containing the entire csv into one 2d array, its amazing i know
 
         reader.close();
         reader = new Scanner(file); // reinitalise scanner to get it back to the top of the file
@@ -445,13 +445,13 @@ public class FitnessCalculatorCS extends Application {
             // split each part of the file and populate the array with it
             String[] line = reader.nextLine().split(",");
             for (int i = 0; i < 4; i++) {
-                ultimateString[length][i] = line[i];
+                csvArray[length][i] = line[i];
             }
             length++;
         }
 
         reader.close();
-        return ultimateString;
+        return csvArray;
     }
 
     /**
