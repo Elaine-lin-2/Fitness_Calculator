@@ -149,8 +149,6 @@ public class FitnessCalculatorCS extends Application {
 
                     for (int i = 0; i < number; i++) {
 
-                        final int iCopy = i;
-
                         // Prompt student information based on the number of students
                         Label labelfirst = new Label("    Enter student name");
                         Label label1 = new Label();
@@ -174,7 +172,7 @@ public class FitnessCalculatorCS extends Application {
 
                             vb.getChildren().addAll(label, label1, label2, label3);
                             try {
-                                printData(iCopy + 1, text1.getText(), text2.getText(), numberReps);
+                                printData(text1.getText(), text2.getText(), numberReps);
                             }
                             catch (IOException e1) {
                                 e1.printStackTrace();
@@ -346,10 +344,11 @@ public class FitnessCalculatorCS extends Application {
      * @param number - the max number of reps that the person can do
      * @throws IOException if file is not found
      */
-    public static void printData(int studentNumber, String name, String gender, int number) throws IOException {
+    public static void printData(String name, String gender, int number) throws IOException {
         // Initialise Variables
         String fileName = "student-info.csv";
         File file = new File(fileName);
+        int trueStudentNumber = 0;
 
         String text = ""; // Text to use to export the data
         String delimiter = ","; // If you wanna change the delimiter, change here
@@ -358,6 +357,7 @@ public class FitnessCalculatorCS extends Application {
         if (!file.exists()) {
             file.createNewFile();
             text += "Student Number,Name,Gender,Max number of reps\n";
+            trueStudentNumber++;
         }
 
         // Initialise scanner
@@ -366,13 +366,14 @@ public class FitnessCalculatorCS extends Application {
         // Get the original contents of the csv file
         while (reader.hasNextLine()) {
             text += reader.nextLine() + "\n";
+            trueStudentNumber++;
         }
 
         // Initialise FileWriter
         FileWriter writer = new FileWriter(file);
 
         // Add text by every category that is needed
-        text += "Student " + studentNumber;
+        text += "Student " + trueStudentNumber;
         text += delimiter;
         text += name;
         text += delimiter;
@@ -414,6 +415,7 @@ public class FitnessCalculatorCS extends Application {
 
         String[][] ultimateString = new String[length][4]; // the ULTIMATE string basically containing the entire csv into one 2d array, its amazing i know
 
+        reader.close();
         reader = new Scanner(file); // reinitalise scanner to get it back to the top of the file
         reader.nextLine(); 
 
