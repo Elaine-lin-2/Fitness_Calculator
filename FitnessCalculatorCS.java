@@ -411,9 +411,11 @@ public class FitnessCalculatorCS extends Application {
     * Author: Tiffany
     * Loops through the array of each student's maximum weight that they can (in theory) lift, and provides everyone with a personal report (containing ways to improve)
     * @param expectedWeight - the array of all the student's calculated 1RM values
+    * @param primaryStage - the primary window of the application
+    * @param scene - displayed content regarding student's information/fitness inside window
+    * @param layout - layout component that arranges in to column
     * no return
     * */
-
     
     public static void analyse(String[] expected1RMArray,Stage primaryStage,Scene scene, VBox layout){
         // Create double array for 1RM values
@@ -422,6 +424,7 @@ public class FitnessCalculatorCS extends Application {
         for (int i = 0; i < expected1RMArray.length; i++){
             // Convert from string array to double array
             expectedDoubleArray[i] = Double.parseDouble(expected1RMArray[i]);
+            // Reports:
             // 0-59
             Label label= new Label(); 
             label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
