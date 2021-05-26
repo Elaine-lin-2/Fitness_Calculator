@@ -102,7 +102,7 @@ public class FitnessCalculatorCS extends Application {
                 genderArray = new String[csvArray.length];
                 acctualRepArray = new String [csvArray.length];
                 maxWeightArray = new String [csvArray.length];
-
+                
                 for (int i = 0; i < csvArray.length; i++) {
                     nameArray[i] = csvArray[i][1];
                     genderArray[i] = csvArray[i][2];
@@ -110,9 +110,11 @@ public class FitnessCalculatorCS extends Application {
                     maxWeightArray[i] = csvArray[i][4];
 
                 }
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            //System.out.println()
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -136,7 +138,7 @@ public class FitnessCalculatorCS extends Application {
                     sc.setVisibleAmount(50);
                     sc.setMax(scene1.getHeight()*number);
                     for (int i = 0; i < number; i++) {
-                        
+
                         // Prompt student information based on the number of students
                         Label labelfirst = new Label("    Enter student name");
                         Label label1 = new Label();
@@ -162,16 +164,13 @@ public class FitnessCalculatorCS extends Application {
                             double weight = Double.parseDouble(text4.getText());
                             label4.setText("    The max weight they can lift:  " + weight);
                             vb.getChildren().addAll(label, label1, label2, label3, label4);
-
-                            
+ 
                             try {
                                 printData(text1.getText(), text2.getText(), numberReps, weight);
                             }
                             catch (IOException e1) {
                                 e1.printStackTrace();
                             }
-                            
-                            
                         });
                         VBox layout2 = new VBox(5);
                         // add elements to the scene
@@ -192,7 +191,8 @@ public class FitnessCalculatorCS extends Application {
                 }
             };
             menuItem1.setOnAction(event);
-            
+
+            /*
             try {
                 csvArray = readData();
                 acctualRepArray = csvArray[number];
@@ -200,11 +200,20 @@ public class FitnessCalculatorCS extends Application {
                 nameArray = csvArray[number];
                 maxWeightArray = csvArray[number];
 
-                expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
+                
+                expected1RMArray = csvArray[number];
+
+                for(int i=0; i<number; i++){
+                    System.out.println(expected1RMArray[i]);
+                }
+            
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            */
+
+            
 
             //call the second event (generate report)
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
@@ -272,12 +281,6 @@ public class FitnessCalculatorCS extends Application {
                     button3.setOnAction(f -> {
                         CategoryAxis xAxis = new CategoryAxis();  
                         
-                        /*
-                        xAxis.setCategories(FXCollections.<String>
-                        //Needs to be modified
-                        observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4"))); //to be modified after reading the CSV file
-                        */
-                        
                         xAxis.setLabel("Student name");
                         
                         NumberAxis yAxis = new NumberAxis();
@@ -296,23 +299,18 @@ public class FitnessCalculatorCS extends Application {
                             try{
                                 final String[][] tempCsvData = readData();
                                 final String[] nameArray = fillArray(tempCsvData, 1);
-                                //final String[] genderArray = fillArray(tempCsvData, 2);
-                                //final String[] acctualRepArray = fillArray(tempCsvData, 3);
+                                final String []acctualRepArray = fillArray (tempCsvData, 3);
                                 final String[] maxWeightArray = fillArray(tempCsvData, 4);
-                                
-                                
-                                //double acctualRep = Double.parseDouble(acctualRepArray[i]);
                                 double maxWeight = Double.parseDouble(maxWeightArray[i]);
 
+                                final String[] expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
+                                double expWeight = Double.parseDouble(expected1RMArray[i]);
+                                
+                                //clear previous data to avoid overlap
                                 barChart.getData().clear();
 
-                                series1.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //expected
-                                //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
-                                //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
-    
-                                series2.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //actual
-                                //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
-                                //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
+                                series1.getData().add(new XYChart.Data<>(nameArray[i], expWeight)); //expected (change this variable)
+                                series2.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //actual 
                             }
                             catch (Exception e1) {
                                 e1.printStackTrace();
