@@ -27,9 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-//graphics 
-import java.util.Arrays;
-import javafx.collections.FXCollections;
+//graphics
 import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -53,19 +51,6 @@ public class FitnessCalculatorCS extends Application {
     * */
     public void start(Stage primaryStage){
 
-        /* for testing
-        try {
-            String[][] whatthehell = readData();
-            for (String[] i: whatthehell) {
-                for (String j: i) {
-                    System.out.println(j);
-                }
-            }
-        } catch (FileNotFoundException e2) {
-            e2.printStackTrace();
-        }
-        */
-
         //Set title of the first scene
         primaryStage.setTitle("Student information");
 
@@ -75,11 +60,13 @@ public class FitnessCalculatorCS extends Application {
         Button button= new Button("OK");
         TextField text1= new TextField();
         VBox layout= new VBox(5);
+
         //add labels, texts, buttons
         layout.getChildren().addAll(labelfirst,text1, button, label1);
         Scene scene1= new Scene(layout, 500, 500);
         primaryStage.setScene(scene1);
         primaryStage.show();
+
         //create button event
         button.setOnAction(f -> {
             //create user menu and menu bar
@@ -100,35 +87,33 @@ public class FitnessCalculatorCS extends Application {
             menu.getItems().add(menuItem2);
             menu.getItems().add(menuItem3);
             int number = Integer.parseInt(text1.getText());
+
             //define neccessary arrays
             String[][] csvArray = new String[0][0];
-            String []genderArray = new String[number];
-            String []numArray = new String[number];
-            String []maxRepArray = new String[number]; //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
-            String []maxWeightArray = new String[number]; //--> Added            -just wanted to make sure my addition didn't disrupt your plans loll)
-            String []expected1RMArray = new String[number]; //--> Added
             String []nameArray = new String[number];
-
+            String []genderArray = new String[number];
+            String []acctualRepArray = new String [number];
+            String []maxWeightArray = new String[number];
+            String []expected1RMArray = new String[number];                                               //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
+            
             try {
                 csvArray = readData();
                 nameArray = new String[csvArray.length];
                 genderArray = new String[csvArray.length];
-                maxRepArray = new String[csvArray.length];
+                acctualRepArray = new String [csvArray.length];
+                maxWeightArray = new String [csvArray.length];
+
                 for (int i = 0; i < csvArray.length; i++) {
                     nameArray[i] = csvArray[i][1];
                     genderArray[i] = csvArray[i][2];
-                    maxRepArray[i] = csvArray[i][3];
+                    acctualRepArray[i] = csvArray[i][3];
+                    maxWeightArray[i] = csvArray[i][4];
+
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-        //do //{
-            //Subs in the entire max rep and max weight arrays and returns an array of expected 1RM results
-        
-        //expected1RMArray = EpleyCalculation(maxRepArray, maxWeightArray);
-        //} while (true);
-        //}
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 
@@ -151,6 +136,7 @@ public class FitnessCalculatorCS extends Application {
                     sc.setVisibleAmount(50);
                     sc.setMax(scene1.getHeight()*number);
                     for (int i = 0; i < number; i++) {
+                        
                         // Prompt student information based on the number of students
                         Label labelfirst = new Label("    Enter student name");
                         Label label1 = new Label();
@@ -162,26 +148,35 @@ public class FitnessCalculatorCS extends Application {
                         Label labelthird = new Label("    Enter the max number of reps");
                         Label label3 = new Label();
                         TextField text3 = new TextField();
+                        Label labelforth = new Label("    Enter the max weight");
+                        Label label4 = new Label();
+                        TextField text4 = new TextField();
+
                         // save and print the information
                         Button button = new Button("Save and show");
                         button.setOnAction(f -> {
                             label1.setText("    Student name:  " + text1.getText());
                             label2.setText("    Their gender is: " + text2.getText());
-                            int numberReps = Integer.parseInt(text3.getText());
-                            label3.setText("    The max number of they can do: " + numberReps);
-                            vb.getChildren().addAll(label, label1, label2, label3);
+                            double numberReps = Double.parseDouble(text3.getText());
+                            label3.setText("    The max number of reps they can do: " + numberReps);
+                            double weight = Double.parseDouble(text4.getText());
+                            label4.setText("    The max weight they can lift:  " + weight);
+                            vb.getChildren().addAll(label, label1, label2, label3, label4);
+
+                            
                             try {
-                                printData(text1.getText(), text2.getText(), numberReps);
+                                printData(text1.getText(), text2.getText(), numberReps, weight);
                             }
                             catch (IOException e1) {
                                 e1.printStackTrace();
                             }
                             
+                            
                         });
                         VBox layout2 = new VBox(5);
                         // add elements to the scene
-                        vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, button,
-                                layout2);
+                        vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, labelforth,
+                        text4, button, layout2);
                 }
                 // scroll bar motion function
                 sc.valueProperty()
@@ -198,6 +193,19 @@ public class FitnessCalculatorCS extends Application {
             };
             menuItem1.setOnAction(event);
             
+            try {
+                csvArray = readData();
+                acctualRepArray = csvArray[number];
+                genderArray = csvArray[number];
+                nameArray = csvArray[number];
+                maxWeightArray = csvArray[number];
+
+                expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             //call the second event (generate report)
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
                 
@@ -245,15 +253,7 @@ public class FitnessCalculatorCS extends Application {
             };
             menuItem2.setOnAction(event2);
 
-            try {
-                csvArray = readData();
-                numArray = csvArray[number];
-                genderArray = csvArray[number];
-                nameArray = csvArray[number];
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            
 
             //call the third event
             EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
@@ -271,9 +271,13 @@ public class FitnessCalculatorCS extends Application {
 
                     button3.setOnAction(f -> {
                         CategoryAxis xAxis = new CategoryAxis();  
+                        
+                        /*
                         xAxis.setCategories(FXCollections.<String>
                         //Needs to be modified
                         observableArrayList(Arrays.asList("Name 1", "Name 2", "Name 3", "Name 4"))); //to be modified after reading the CSV file
+                        */
+                        
                         xAxis.setLabel("Student name");
                         
                         NumberAxis yAxis = new NumberAxis();
@@ -292,17 +296,21 @@ public class FitnessCalculatorCS extends Application {
                             try{
                                 final String[][] tempCsvData = readData();
                                 final String[] nameArray = fillArray(tempCsvData, 1);
-                                final String[] genderArray = fillArray(tempCsvData, 2);
-                                final String[] maxRepArray = fillArray(tempCsvData, 3);
+                                //final String[] genderArray = fillArray(tempCsvData, 2);
+                                //final String[] acctualRepArray = fillArray(tempCsvData, 3);
+                                final String[] maxWeightArray = fillArray(tempCsvData, 4);
                                 
+                                
+                                //double acctualRep = Double.parseDouble(acctualRepArray[i]);
+                                double maxWeight = Double.parseDouble(maxWeightArray[i]);
 
-                                System.out.println(nameArray[i]);
-                                
-                                series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
+                                barChart.getData().clear();
+
+                                series1.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //expected
                                 //series1.getData().add(new XYChart.Data<>("Name 2", 1.0));
                                 //series1.getData().add(new XYChart.Data<>("Name 3", 1.0));
     
-                                series2.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //actual
+                                series2.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //actual
                                 //series2.getData().add(new XYChart.Data<>("Name 2", 5.0));
                                 //series2.getData().add(new XYChart.Data<>("Name 3", 5.0));
                             }
@@ -311,6 +319,8 @@ public class FitnessCalculatorCS extends Application {
                             }
                             //Setting the data to bar chart     
                             barChart.getData().addAll(series1, series2);
+                            
+                            
                         }
                         //Creating a Group object 
                         Group root = new Group(barChart);
@@ -354,28 +364,35 @@ public class FitnessCalculatorCS extends Application {
      * @param number - the max number of reps that the person can do
      * @throws IOException if file is not found
      */
-    public static void printData(String name, String gender, int number) throws IOException {
+    public static void printData(String name, String gender, double number, double maxWeight) throws IOException {
         // Initialise Variables
         String fileName = "student-info.csv";
         File file = new File(fileName);
         int trueStudentNumber = 0;
-        String text = ""; // Text to use to export the data
-        String delimiter = ","; // If you wanna change the delimiter, change here
+
+         // Text to use to export the data
+        String text = "";
+        String delimiter = ",";
+        
         // Create a new file if it isnt made yet
         if (!file.exists()) {
             file.createNewFile();
-            text += "Student Number,Name,Gender,Max number of reps\n";
+            text += "Student Number,Name,Gender,Max number of reps,Max weight\n";
             trueStudentNumber++;
         }
+
         // Initialise scanner
         Scanner reader = new Scanner(file);
+
         // Get the original contents of the csv file
         while (reader.hasNextLine()) {
             text += reader.nextLine() + "\n";
             trueStudentNumber++;
         }
+
         // Initialise FileWriter
         FileWriter writer = new FileWriter(file);
+
         // Add text by every category that is needed
         text += "Student " + trueStudentNumber;
         text += delimiter;
@@ -384,6 +401,8 @@ public class FitnessCalculatorCS extends Application {
         text += gender;
         text += delimiter;
         text += number;
+        text += delimiter;
+        text += maxWeight;
         
         // Write the csv file back
         writer.write(text);
@@ -412,7 +431,7 @@ public class FitnessCalculatorCS extends Application {
             length++;
             reader.nextLine();
         }
-        String[][] csvArray = new String[length][4]; 
+        String[][] csvArray = new String[length][5]; 
         reader.close();
         reader = new Scanner(file); // reinitalise scanner to get it back to the top of the file
         reader.nextLine(); 
@@ -421,7 +440,7 @@ public class FitnessCalculatorCS extends Application {
         while (reader.hasNextLine()) {
             // split each part of the file and populate the array with it
             String[] line = reader.nextLine().split(",");
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 csvArray[length][i] = line[i];
             }
             length++;
@@ -488,7 +507,7 @@ public class FitnessCalculatorCS extends Application {
             expectedDoubleArray[i] = Double.parseDouble(expected1RMArray[i]);
             // Reports:
             // 0-59
-            Label label= new Label(); 
+            Label label= new Label();
             label.setText("Here are some exercises you can try often to eventually reach your one-repetition maximum:");
             
             if ((expectedDoubleArray[i] > 0) && (expectedDoubleArray[i] < 60)){
