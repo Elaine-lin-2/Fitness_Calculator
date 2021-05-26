@@ -96,7 +96,7 @@ public class FitnessCalculatorCS extends Application {
             int number = Integer.parseInt(text1.getText());
 
             //define neccessary arrays
-            String[][] csvArray;
+            String[][] csvArray = new String[0][0];
             String []genderArray = new String[number];
             String []numArray = new String[number];
             String []maxRepArray = new String[number]; //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
@@ -106,9 +106,14 @@ public class FitnessCalculatorCS extends Application {
 
             try {
                 csvArray = readData();
-                numArray = csvArray[1];
-                genderArray = csvArray[2];
-                maxRepArray = csvArray[3];
+                nameArray = new String[csvArray.length];
+                genderArray = new String[csvArray.length];
+                maxRepArray = new String[csvArray.length];
+                for (int i = 0; i < csvArray.length; i++) {
+                    nameArray[i] = csvArray[i][1];
+                    genderArray[i] = csvArray[i][2];
+                    maxRepArray[i] = csvArray[i][3];
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -293,8 +298,11 @@ public class FitnessCalculatorCS extends Application {
                         for(int i=0; i< number; i++){
 
                             try{
-                                final String[][] csvArray = readData(); // Have to do it here because I need to use a try catch statement
-                                final String[] nameArray = csvArray[1];
+                                final String[][] tempCsvData = readData();
+                                final String[] nameArray = fillArray(tempCsvData, 1);
+                                final String[] genderArray = fillArray(tempCsvData, 2);
+                                final String[] maxRepArray = fillArray(tempCsvData, 3);
+                                
 
 
                                 series1.getData().add(new XYChart.Data<>(nameArray[i], 5.0)); //expected
@@ -340,6 +348,14 @@ public class FitnessCalculatorCS extends Application {
             menuItem3.setOnAction(event3);
             menuBar.getMenus().add(menu);
         });
+    }
+
+    public static String[] fillArray(String[][] csvArray, int arrNum) {
+        String[] temp = new String[csvArray.length];
+        for (int j = 0; j < csvArray.length; j++) {
+            temp[j] = csvArray[j][arrNum];
+        }
+        return temp;
     }
 
     /**
