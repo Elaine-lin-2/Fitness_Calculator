@@ -190,30 +190,7 @@ public class FitnessCalculatorCS extends Application {
                 primaryStage.show();
                 }
             };
-            menuItem1.setOnAction(event);
-
-            /*
-            try {
-                csvArray = readData();
-                acctualRepArray = csvArray[number];
-                genderArray = csvArray[number];
-                nameArray = csvArray[number];
-                maxWeightArray = csvArray[number];
-
-                
-                expected1RMArray = csvArray[number];
-
-                for(int i=0; i<number; i++){
-                    System.out.println(expected1RMArray[i]);
-                }
-            
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            */
-
-            
+            menuItem1.setOnAction(event);   
 
             //call the second event (generate report)
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
