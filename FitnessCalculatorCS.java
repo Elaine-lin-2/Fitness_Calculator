@@ -498,10 +498,8 @@ public class FitnessCalculatorCS extends Application {
     /*
     * Author: Tiffany 
     * Loops through the array of each student's maximum weight that they can (in theory) lift, and provides everyone with a personal report (containing ways to improve)
-    * @param expectedWeight - the array of all the student's calculated 1RM values
-    * @param primaryStage - the primary window of the application
-    * @param scene - displayed content regarding student's information/fitness inside window
-    * @param layout - layout component that arranges in to column
+    * @param expected1RMWeight - the array of all the student's calculated 1RM values
+    * @param nameArray - the string array containing all the inputted student's names
     * no return
     * */
     
