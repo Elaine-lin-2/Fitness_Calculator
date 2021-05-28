@@ -113,7 +113,7 @@ public class FitnessCalculatorCS extends Application {
             catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            //System.out.println()
+            
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -176,13 +176,14 @@ public class FitnessCalculatorCS extends Application {
                         // add elements to the scene
                         vb.getChildren().addAll(labelfirst, text1, labelsecond, text2, labelthird, text3, labelforth,
                         text4, button, layout2);
-                }
+                    }
 
-                // scroll bar motion function
-                sc.valueProperty()
-                        .addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-                            vb.setLayoutY(-new_val.doubleValue());
-                        });
+                    // scroll bar motion function
+                    sc.valueProperty()
+                    .addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+                    vb.setLayoutY(-new_val.doubleValue());
+                });
+
                 // Go back to menu button
                 Button button2 = new Button("Go back to menu");
                 button2.setOnAction(f -> primaryStage.setScene(scene));
@@ -201,7 +202,7 @@ public class FitnessCalculatorCS extends Application {
                     final ScrollBar sc = new ScrollBar();
                     final VBox vb = new VBox(5);
                     Group root = new Group();
-                    Scene scene2 = new Scene(root, 500, 900);
+                    Scene scene2 = new Scene(root, 500, 500);
                     //set first scene
                     primaryStage.setScene(scene2);
                     primaryStage.setTitle("User Information");
@@ -222,30 +223,31 @@ public class FitnessCalculatorCS extends Application {
                     
                     //generate individualized reports
                     primaryStage.setTitle("Reports");
-                    Label label= new Label();
-                    label.setText("    Generating individual reports!");
                     Button button2 = new Button ("individual reports");
                     button2.setOnAction (f -> {
-
+                    Label label= new Label();
+                    label.setText(" Students individualized reports are generated!");
                         try{
                             final String[][] tempCsvData = readData();
                             final String[] nameArray = fillArray(tempCsvData, 1);
-                            final String []acctualRepArray = fillArray (tempCsvData, 3);
+                            final String[]acctualRepArray = fillArray (tempCsvData, 3);
                             final String[] maxWeightArray = fillArray(tempCsvData, 4);
                             final String[] expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
-                            analyse(nameArray, expected1RMArray, primaryStage, scene, vb);
+                            analyse(nameArray, expected1RMArray);
                         }
                         catch (Exception e1) {
                             e1.printStackTrace();
                         }
-                        
+                        vb.getChildren().addAll(label);
                     });
+
                     //go back to the main menu
                     Button button3= new Button("Go back to menu");
                     button3.setOnAction(f -> primaryStage.setScene(scene));
                     
                     //add element to scene
-                    vb.getChildren().addAll(label, button3, button2);
+                    vb.getChildren().addAll(button3, button2);
+                    
                     primaryStage.setScene(scene2);
                     primaryStage.show();
                 }
@@ -269,19 +271,18 @@ public class FitnessCalculatorCS extends Application {
                     //create double bar graph
 
                     button3.setOnAction(f -> {
-                        CategoryAxis xAxis = new CategoryAxis();  
-                        
+                        CategoryAxis xAxis = new CategoryAxis();
                         xAxis.setLabel("Student name");
-                        
                         NumberAxis yAxis = new NumberAxis();
                         yAxis.setLabel("Weight");
+
                         //Creating the Bar chart
                         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
                         barChart.setTitle("Expected Weight vs. Actual Weight");
+
                         //Prepare XYChart.Series objects by setting data       
                         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
                         series1.setName("Expected weight");
-    
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
                         
@@ -289,44 +290,47 @@ public class FitnessCalculatorCS extends Application {
                             try{
                                 final String[][] tempCsvData = readData();
                                 final String[] nameArray = fillArray(tempCsvData, 1);
-                                final String []acctualRepArray = fillArray (tempCsvData, 3);
+                                final String[]acctualRepArray = fillArray (tempCsvData, 3);
                                 final String[] maxWeightArray = fillArray(tempCsvData, 4);
                                 double maxWeight = Double.parseDouble(maxWeightArray[i]);
 
                                 final String[] expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
                                 double expWeight = Double.parseDouble(expected1RMArray[i]);
-                                
+
                                 //clear previous data to avoid overlap
                                 barChart.getData().clear();
 
-                                series1.getData().add(new XYChart.Data<>(nameArray[i], expWeight)); //expected (change this variable)
+                                series1.getData().add(new XYChart.Data<>(nameArray[i], expWeight)); //expected
                                 series2.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //actual 
+
                             }
                             catch (Exception e1) {
                                 e1.printStackTrace();
                             }
                             //Setting the data to bar chart     
                             barChart.getData().addAll(series1, series2);
-                            
-                            
                         }
                         //Creating a Group object 
                         Group root = new Group(barChart);
+
                         //Creating a scene object
                         Scene scene = new Scene(root, 600, 400);
+
                         //Setting title to the Stage
                         primaryStage.setTitle("Bar Chart");
-                            
+
                         //Adding scene to the stage
                         primaryStage.setScene(scene);
                             
                         //Displaying the contents of the stage
                         primaryStage.show(); 
                     });
+
                     //set the scene
                     VBox layout= new VBox(5);
                     layout.getChildren().addAll(label, button2, button3);
                     Scene scene= new Scene(layout, 500, 500);
+
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 }
@@ -408,12 +412,13 @@ public class FitnessCalculatorCS extends Application {
      */
     public static void printTxt(String text, String studentName) throws IOException {
         // Initalise variables
-        String fileName = studentName + ".txt";
+        String fileName = studentName + "'s Report.txt";
         File file = new File(fileName);
         FileWriter writer = new FileWriter(file);
 
         // Write the text given to the file
         writer.write(text);
+        writer.close();
     }
     
     /**
@@ -442,7 +447,7 @@ public class FitnessCalculatorCS extends Application {
         while (reader.hasNextLine()) {
             // split each part of the file and populate the array with it
             String[] line = reader.nextLine().split(",");
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 csvArray[length][i] = line[i];
             }
             length++;
@@ -500,7 +505,7 @@ public class FitnessCalculatorCS extends Application {
     * no return
     * */
     
-    public static void analyse(String[] nameArray, String[] expected1RMArray, Stage primaryStage,Scene scene, VBox layout){
+    public static void analyse(String[] nameArray, String[] expected1RMArray){
         // Create double array for 1RM values
         double[] expectedDoubleArray = new double[expected1RMArray.length];
         
@@ -510,8 +515,6 @@ public class FitnessCalculatorCS extends Application {
             expectedDoubleArray[i] = Double.parseDouble(expected1RMArray[i]);
             // Reports:
             // 0-59
-            //Label label= new Label();
-            
             if ((expectedDoubleArray[i] > 0) && (expectedDoubleArray[i] < 60)){
                 text += "Here are some exercises you can try often to eventually reach your one-repetition maximum:\n" +
                 "(A maximum of 30s rests between each set and 45-60s between exercises)\n\n" +
@@ -544,7 +547,7 @@ public class FitnessCalculatorCS extends Application {
             else if ((expectedDoubleArray[i] >= 150) && (expectedDoubleArray[i] < 200)){
                 text += "Here are some exercises you can try often to eventually reach your one-repetition maximum:\n" +
                 "(A maximum of 30s rests between each set and 45-60s between exercises)\n\n" +
-                
+
                 "1. Do 1 set of as many muscle ups as you can (just get reps in, form doesn’t matter as much for now)\n" +
                 "2. (Endurance improvement) Use a weight that is 70% of your 1RM and do pull ups for 10 sets of 10 reps\n" +
                 "3. (To stress muscle fibres) Use a weight that is 80% of your 1RM and do lat pull downs for 7 sets of 7 reps\n" +
@@ -594,27 +597,12 @@ public class FitnessCalculatorCS extends Application {
                 "**Try to practice these as consistently as possible in order to see improvements/success!\n" +
                 "Check out the link for more information: https://barbend.com/how-to-increase-strength/";
             }
-            
             try {
                 printTxt(text, nameArray[i]);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-            //layout.getChildren().addAll(label);
         }
     }
-    /*
-    public static void testing(Stage primaryStage,Scene scene, VBox layout){
-        
-        Label label= new Label();
-        
-        label.setText("Hello");
-        
-        layout.getChildren().addAll(label);
-        //scene= new Scene(layout, 500, 500);
-        
-    }
-    */
-    
-    
 }
