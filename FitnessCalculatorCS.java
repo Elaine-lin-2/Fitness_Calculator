@@ -398,21 +398,30 @@ public class FitnessCalculatorCS extends Application {
         writer.close();
         reader.close();
     }
+    
+    /**
+     * Exports the text given to a file
+     * @author Marc F
+     * @param text - the text you want to put into a file
+     * @param studentName - the student name to name the file
+     * @throws IOException if the file is not valid
+     */
     public static void printTxt(String text, String studentName) throws IOException {
-        // will do this after
+        // Initalise variables
         String fileName = studentName + ".txt";
         File file = new File(fileName);
         FileWriter writer = new FileWriter(file);
 
+        // Write the text given to the file
         writer.write(text);
     }
+    
     /**
      * Reads the data from the csv file and puts into an array
      * @author Marc F
      * @return 2D array containing the contents of the csv array
      * @throws FileNotFoundException if the file is not found
      */
-
     public static String[][] readData() throws FileNotFoundException {
         // Initialise Variables
         File file = new File("student-info.csv");
