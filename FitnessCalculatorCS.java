@@ -342,6 +342,14 @@ public class FitnessCalculatorCS extends Application {
         });
     }
 
+    /**
+     * Fills a specific column from the main csvArray.
+     * 
+     * @author Marc F
+     * @param csvArray - the array that is gotten from readData()
+     * @param arrNum - the column you want to extract data from
+     * @return the array that was extracted data from
+     */
     public static String[] fillArray(String[][] csvArray, int arrNum) {
         String[] temp = new String[csvArray.length];
         for (int j = 0; j < csvArray.length; j++) {
