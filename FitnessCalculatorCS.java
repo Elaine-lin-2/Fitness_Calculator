@@ -72,8 +72,16 @@ public class FitnessCalculatorCS extends Application {
             primaryStage.setTitle("Menu");
             MenuBar menuBar = new MenuBar();
             VBox vBox = new VBox(menuBar);
-            Scene scene = new Scene(vBox, 300, 400);
+            Scene scene = new Scene(vBox, 600, 400);
     
+            //Displays instructions
+            Label instructions = new Label("\n      Welcome to the Fitness Calculator"+
+            "\n\n     Start using the application by clicking <menu>" + 
+            "\n     Step 1 - Enter students' information, a student info .csv will be generated " +
+            "\n     Step 2 - Individualized reports for improvement will be generated as .txt files" +
+            "\n     Step 3 - A bar graph comparing the actual and expected weight will be generated");
+            vBox.getChildren().addAll(instructions);
+
             //set scene
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -82,9 +90,7 @@ public class FitnessCalculatorCS extends Application {
             MenuItem menuItem1 = new MenuItem("Enter user information");
             MenuItem menuItem2 = new MenuItem("Generate Individualized report");
             MenuItem menuItem3 = new MenuItem("Calculate expected weight and print bar graph");
-            menu.getItems().add(menuItem1);
-            menu.getItems().add(menuItem2);
-            menu.getItems().add(menuItem3);
+            menu.getItems().addAll(menuItem1,menuItem2, menuItem3);
             int number = Integer.parseInt(text1.getText());
 
             //define neccessary arrays
