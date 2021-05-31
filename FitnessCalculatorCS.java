@@ -286,12 +286,13 @@ public class FitnessCalculatorCS extends Application {
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
                         
-                        for(int i=0; i< number; i++){
-                            try{
-                                final String[][] tempCsvData = readData();
-                                final String[] nameArray = fillArray(tempCsvData, 1);
-                                final String[]acctualRepArray = fillArray (tempCsvData, 3);
-                                final String[] maxWeightArray = fillArray(tempCsvData, 4);
+                        try {
+                            final String[][] tempCsvData = readData();
+                            final String[] nameArray = fillArray(tempCsvData, 1);
+                            final String[]acctualRepArray = fillArray (tempCsvData, 3);
+                            final String[] maxWeightArray = fillArray(tempCsvData, 4);
+
+                            for(int i=0; i < nameArray.length; i++){
                                 double maxWeight = Double.parseDouble(maxWeightArray[i]);
 
                                 final String[] expected1RMArray = EpleyCalculation(acctualRepArray, maxWeightArray);
@@ -303,13 +304,14 @@ public class FitnessCalculatorCS extends Application {
                                 series1.getData().add(new XYChart.Data<>(nameArray[i], expWeight)); //expected
                                 series2.getData().add(new XYChart.Data<>(nameArray[i], maxWeight)); //actual 
 
+                                //Setting the data to bar chart     
+                                barChart.getData().addAll(series1, series2);
                             }
-                            catch (Exception e1) {
-                                e1.printStackTrace();
-                            }
-                            //Setting the data to bar chart     
-                            barChart.getData().addAll(series1, series2);
                         }
+                        catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        
                         //Creating a Group object 
                         Group root = new Group(barChart);
 
