@@ -42,7 +42,7 @@ public class FitnessCalculatorCS extends Application {
         launch(args);
         //add methods into start(); instead of main
     }
-    /*
+    /*p
     * Author: Elaine L
     * Run the program outside the terminal using favafx
     *
@@ -113,13 +113,11 @@ public class FitnessCalculatorCS extends Application {
                     genderArray[i] = csvArray[i][2];
                     acctualRepArray[i] = csvArray[i][3];
                     maxWeightArray[i] = csvArray[i][4];
-
                 }
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -260,17 +258,15 @@ public class FitnessCalculatorCS extends Application {
             };
             menuItem2.setOnAction(event2);
 
-            
-
             //call the third event
             EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
                     
                     //create first scene
-                    primaryStage.setTitle("Expected Weights + Bar Graph");
+                    primaryStage.setTitle("Expected Weights and Bar Graph");
                     Label label= new Label();
-                    label.setText("    Calculating the expected weights!");
+                    //label.setText("    Calculating the expected weights!");
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     Button button3= new Button("Show bar graph");
