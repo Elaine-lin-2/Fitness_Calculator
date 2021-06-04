@@ -92,32 +92,7 @@ public class FitnessCalculatorCS extends Application {
             MenuItem menuItem3 = new MenuItem("Calculate expected weight and print bar graph");
             menu.getItems().addAll(menuItem1,menuItem2, menuItem3);
             int number = Integer.parseInt(text1.getText());
-
-            //define neccessary arrays
-            String[][] csvArray = new String[0][0];
-            String []nameArray = new String[number];
-            String []genderArray = new String[number];
-            String []acctualRepArray = new String [number];
-            String []maxWeightArray = new String[number];
-            String []expected1RMArray = new String[number];                                               //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
             
-            try {
-                csvArray = readData();
-                nameArray = new String[csvArray.length];
-                genderArray = new String[csvArray.length];
-                acctualRepArray = new String [csvArray.length];
-                maxWeightArray = new String [csvArray.length];
-                
-                for (int i = 0; i < csvArray.length; i++) {
-                    nameArray[i] = csvArray[i][1];
-                    genderArray[i] = csvArray[i][2];
-                    acctualRepArray[i] = csvArray[i][3];
-                    maxWeightArray[i] = csvArray[i][4];
-                }
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
