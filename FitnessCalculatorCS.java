@@ -42,14 +42,15 @@ public class FitnessCalculatorCS extends Application {
         launch(args);
         //add methods into start(); instead of main
     }
-    /*p
-    * Author: Elaine L
+    /*
+    * 
     * Run the program outside the terminal using favafx
-    *
+    * @author - Elaine L
     * @param - new stage 
-    *@ return - no return
-    * */
+    * @return - no return
+    */
     public void start(Stage primaryStage){
+
         //Set title of the first scene
         primaryStage.setTitle("Student information");
 
@@ -68,6 +69,7 @@ public class FitnessCalculatorCS extends Application {
 
         //create button event
         button.setOnAction(f -> {
+
             //create user menu and menu bar
             primaryStage.setTitle("Menu");
             MenuBar menuBar = new MenuBar();
@@ -85,6 +87,7 @@ public class FitnessCalculatorCS extends Application {
             //set scene
             primaryStage.setScene(scene);
             primaryStage.show();
+
             //set & add the three options
             Menu menu = new Menu("Menu");
             MenuItem menuItem1 = new MenuItem("Enter user information");
@@ -93,14 +96,16 @@ public class FitnessCalculatorCS extends Application {
             menu.getItems().addAll(menuItem1,menuItem2, menuItem3);
             int number = Integer.parseInt(text1.getText());
 
+            /*
             //define neccessary arrays
             String[][] csvArray = new String[0][0];
             String []nameArray = new String[number];
             String []genderArray = new String[number];
             String []acctualRepArray = new String [number];
             String []maxWeightArray = new String[number];
-            String []expected1RMArray = new String[number];                                               //--> Added             (lol you can remove this comment (+the "added"s) once you've seen it 
+            String []expected1RMArray = new String[number];
             
+            //Iterate the arrays
             try {
                 csvArray = readData();
                 nameArray = new String[csvArray.length];
@@ -118,6 +123,7 @@ public class FitnessCalculatorCS extends Application {
             catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            */
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -196,34 +202,22 @@ public class FitnessCalculatorCS extends Application {
                 primaryStage.show();
                 }
             };
-            menuItem1.setOnAction(event);   
+            menuItem1.setOnAction(event);
 
             //call the second event (generate report)
             EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
                 
                 public void handle(ActionEvent e){
+
                     //add scroll bar
-                    final ScrollBar sc = new ScrollBar();
                     final VBox vb = new VBox(5);
                     Group root = new Group();
                     Scene scene2 = new Scene(root, 500, 500);
+
                     //set first scene
                     primaryStage.setScene(scene2);
                     primaryStage.setTitle("User Information");
-                    root.getChildren().addAll(vb, sc);
-                    vb.setLayoutX(10);
-                    vb.setSpacing(10);
-                    sc.setLayoutX(scene2.getWidth()-sc.getWidth());
-                    sc.setMin(0);
-                    sc.setOrientation(Orientation.VERTICAL);
-                    sc.setPrefHeight(900);
-                    sc.setVisibleAmount(50);
-                    sc.setMax(scene2.getHeight()*number);
-                    //scroll bar motion 
-                    sc.valueProperty().addListener((ObservableValue<? extends Number> ov, 
-                        Number old_val, Number new_val) -> {
-                        vb.setLayoutY(-new_val.doubleValue());
-                    });
+                    root.getChildren().addAll(vb);
                     
                     //generate individualized reports
                     primaryStage.setTitle("Reports");
@@ -250,8 +244,7 @@ public class FitnessCalculatorCS extends Application {
                     button3.setOnAction(f -> primaryStage.setScene(scene));
                     
                     //add element to scene
-                    vb.getChildren().addAll(button3, button2);
-                    
+                    vb.getChildren().addAll(button3, button2); 
                     primaryStage.setScene(scene2);
                     primaryStage.show();
                 }
@@ -266,7 +259,6 @@ public class FitnessCalculatorCS extends Application {
                     //create first scene
                     primaryStage.setTitle("Expected Weights and Bar Graph");
                     Label label= new Label();
-                    //label.setText("    Calculating the expected weights!");
                     Button button2= new Button("Go back to menu");
                     button2.setOnAction(f -> primaryStage.setScene(scene));
                     Button button3= new Button("Show bar graph");
@@ -288,6 +280,7 @@ public class FitnessCalculatorCS extends Application {
                         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
                         series2.setName("Acutual weight");
                         
+                        //Import data into the double bar graph
                         try {
                             final String[][] tempCsvData = readData();
                             final String[] nameArray = fillArray(tempCsvData, 1);
@@ -374,7 +367,7 @@ public class FitnessCalculatorCS extends Application {
         File file = new File(fileName);
         int trueStudentNumber = 0;
 
-         // Text to use to export the data
+        // Text to use to export the data
         String text = "";
         String delimiter = ",";
         
@@ -513,8 +506,8 @@ public class FitnessCalculatorCS extends Application {
     * @param expected1RMWeight - the array of all the student's calculated 1RM values
     * @param nameArray - the string array containing all the inputted student's names
     * no return
-    * */
-    
+    *
+    */
     public static void analyse(String[] nameArray, String[] expected1RMArray){
         // Create double array for 1RM values
         double[] expectedDoubleArray = new double[expected1RMArray.length];
