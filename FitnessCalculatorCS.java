@@ -95,6 +95,7 @@ public class FitnessCalculatorCS extends Application {
             MenuItem menuItem3 = new MenuItem("Calculate expected weight and print bar graph");
             menu.getItems().addAll(menuItem1,menuItem2, menuItem3);
             int number = Integer.parseInt(text1.getText());
+<<<<<<< HEAD
 
             /*
             //define neccessary arrays
@@ -124,6 +125,9 @@ public class FitnessCalculatorCS extends Application {
                 e.printStackTrace();
             }
             */
+=======
+            
+>>>>>>> 593bf55b0d303427d1be5904cc881309db87d5cf
 
             //First button event (prompt students's info)
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
